@@ -6,6 +6,8 @@ struct PaletteGrid: View {
     @ObservedObject var document: ProjectDocument
     @Binding var selectedColorID: UUID?
     let onSelectColor: (UUID) -> Void
+    let onCreatePalette: () -> Void
+    let onRegeneratePalette: () -> Void
     @State private var showingRegenerateConfirmation = false
 
     var body: some View {
@@ -83,7 +85,7 @@ struct PaletteGrid: View {
                         .multilineTextAlignment(.center)
                         .frame(maxWidth: 360)
                     Button("Create Palette", systemImage: "plus") {
-                        document.createPalette()
+                        onCreatePalette()
                     }
                     .buttonStyle(.borderedProminent)
                 }
@@ -94,7 +96,7 @@ struct PaletteGrid: View {
         .background(AppPalette.canvas)
         .confirmationDialog("Regenerate palette?", isPresented: $showingRegenerateConfirmation, titleVisibility: .visible) {
             Button("Regenerate", role: .destructive) {
-                document.regeneratePalette()
+                onRegeneratePalette()
             }
             Button("Cancel", role: .cancel) { }
         } message: {

@@ -13,7 +13,11 @@ struct SpriteEmptyState: View {
                 .foregroundStyle(.tint)
             Text(document.availableAssets.isEmpty ? "Build your sprite library" : "Choose a sprite")
                 .font(.title3.weight(.semibold))
-            Text(document.availableAssets.isEmpty ? "Import PNGs to inspect and nudge their pixels inside a fixed frame." : "Select an asset from the library to inspect it, or import new PNGs to add them.")
+            Text(
+                document.availableAssets.isEmpty
+                    ? "Import PNGs to inspect and nudge their pixels inside a fixed frame."
+                    : "Select an asset from the library to inspect it, or import new PNGs to add them."
+            )
                 .font(.callout)
                 .foregroundStyle(AppPalette.muted)
                 .multilineTextAlignment(.center)

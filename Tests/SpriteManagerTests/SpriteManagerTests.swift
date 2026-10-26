@@ -48,7 +48,8 @@ struct SpriteManagerTests {
 
     @Test func testProjectDocumentUsesPixprojAndReadsLegacyProjects() {
         #expect(ProjectDocument.writableContentTypes.map(\.identifier) == ["com.spritesmanager.pixproj"])
-        #expect(Set(ProjectDocument.readableContentTypes.map(\.identifier)) == Set(["com.spritesmanager.pixproj", "com.spritesmanager.project"]))
+        let readableTypes = Set(ProjectDocument.readableContentTypes.map(\.identifier))
+        #expect(readableTypes == Set(["com.spritesmanager.pixproj", "com.spritesmanager.project"]))
     }
 
     @Test func testShiftKeepsDimensionsAndClipsPixels() throws {
@@ -106,7 +107,13 @@ struct SpriteManagerTests {
             255, 0, 0, 255, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 255, 0, 255
         ]).pngData()
-        let asset = SpriteAsset(name: "global", width: 2, height: 2, contentHash: PixelData.sha256(data), originalFileName: "global.png")
+        let asset = SpriteAsset(
+            name: "global",
+            width: 2,
+            height: 2,
+            contentHash: PixelData.sha256(data),
+            originalFileName: "global.png"
+        )
         try library.register(asset, data: data)
 
         let document = ProjectDocument(library: library)
@@ -343,11 +350,15 @@ struct SpriteManagerTests {
         document.updatePaletteColor(red.id, output: PaletteRGBColor(r: 0, g: 255, b: 0))
 
         let preview = try PixelBuffer(image: try document.renderedSheet(try #require(document.project.sheets.first), mode: .preview))
-        let committed = try PixelBuffer(image: try document.renderedSheet(try #require(document.project.sheets.first), mode: .committed))
+        let committedSheet = try #require(document.project.sheets.first)
+        let committedImage = try document.renderedSheet(committedSheet, mode: .committed)
+        let committed = try PixelBuffer(image: committedImage)
         #expect(preview[0, 0].g == 255)
         #expect(committed[0, 0].r == 255)
         #expect(try #require(document.pixelData[spriteID]) == data)
-        let lastPreview = try PixelBuffer(image: try document.renderedSheet(try #require(document.project.sheets.last), mode: .preview))
+        let lastSheet = try #require(document.project.sheets.last)
+        let lastImage = try document.renderedSheet(lastSheet, mode: .preview)
+        let lastPreview = try PixelBuffer(image: lastImage)
         let expectedWidth = try #require(document.project.sheets.last?.canvasWidth)
         #expect(lastPreview.width == expectedWidth)
     }
@@ -401,7 +412,11 @@ struct SpriteManagerTests {
         let snapshot = try document.snapshot(contentType: .spritesProject)
         #expect(snapshot.manifest.project.palette?.colors.first?.output == PaletteRGBColor(r: 0, g: 255, b: 0))
         let wrapper = try document.fileWrapper(snapshot: snapshot)
-        let reopened = try ProjectDocument(packageWrapper: wrapper, library: LibraryStore(rootURL: root.appendingPathComponent("reopened-library")))
+        let reopenedLibraryURL = root.appendingPathComponent("reopened-library")
+        let reopened = try ProjectDocument(
+            packageWrapper: wrapper,
+            library: LibraryStore(rootURL: reopenedLibraryURL)
+        )
         #expect(reopened.project.palette?.colors.first?.output == PaletteRGBColor(r: 0, g: 255, b: 0))
 
         try document.export(sheet: try #require(document.project.sheets.first), to: root)
@@ -432,7 +447,11 @@ struct SpriteManagerTests {
             "assets": FileWrapper(directoryWithFileWrappers: [:])
         ])
 
-        let opened = try ProjectDocument(packageWrapper: wrapper, library: LibraryStore(rootURL: root.appendingPathComponent("library")))
+        let openedLibraryURL = root.appendingPathComponent("library")
+        let opened = try ProjectDocument(
+            packageWrapper: wrapper,
+            library: LibraryStore(rootURL: openedLibraryURL)
+        )
         #expect(opened.project.schemaVersion == SpriteProject.currentSchemaVersion)
         #expect(opened.project.palette == nil)
         #expect(opened.isDirty)

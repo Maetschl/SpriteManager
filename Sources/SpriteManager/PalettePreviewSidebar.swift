@@ -23,7 +23,11 @@ struct PalettePreviewSidebar: View {
             Label("Sheet preview", systemImage: "rectangle.on.rectangle")
                 .font(.headline)
             if document.project.sheets.isEmpty {
-                ContentUnavailableView("No sheets yet", systemImage: "rectangle.3.group", description: Text("Create a spritesheet before creating a palette."))
+                ContentUnavailableView(
+                    "No sheets yet",
+                    systemImage: "rectangle.3.group",
+                    description: Text("Create a spritesheet before creating a palette.")
+                )
             } else {
                 Picker("Spritesheet", selection: $selectedSheetID) {
                     ForEach(document.project.sheets) { sheet in

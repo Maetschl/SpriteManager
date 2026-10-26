@@ -42,7 +42,10 @@ struct SheetCanvas: View {
                         Image(nsImage: NSImage(cgImage: image, size: NSSize(width: sheet.canvasWidth, height: sheet.canvasHeight)))
                             .interpolation(.none)
                             .resizable()
-                            .frame(width: CGFloat(sheet.canvasWidth) * viewModel.zoom, height: CGFloat(sheet.canvasHeight) * viewModel.zoom)
+                            .frame(
+                                width: CGFloat(sheet.canvasWidth) * viewModel.zoom,
+                                height: CGFloat(sheet.canvasHeight) * viewModel.zoom
+                            )
                             .background(Checkerboard())
                         ForEach(sheet.placements) { placement in
                             if let asset = document.asset(for: placement.spriteID) {
@@ -53,11 +56,17 @@ struct SheetCanvas: View {
                                     Image(nsImage: image)
                                         .interpolation(.none)
                                         .resizable()
-                                        .frame(width: CGFloat(asset.width) * viewModel.zoom, height: CGFloat(asset.height) * viewModel.zoom)
+                                        .frame(
+                                            width: CGFloat(asset.width) * viewModel.zoom,
+                                            height: CGFloat(asset.height) * viewModel.zoom
+                                        )
                                         .opacity(0.42)
                                         .overlay {
                                             Rectangle()
-                                                .stroke(viewModel.dragPreview?.isValid == true ? Color.accentColor : .red, style: StrokeStyle(lineWidth: 2, dash: [5, 3]))
+                                                .stroke(
+                                                    viewModel.dragPreview?.isValid == true ? Color.accentColor : .red,
+                                                    style: StrokeStyle(lineWidth: 2, dash: [5, 3])
+                                                )
                                         }
                                         .offset(x: CGFloat(displayX) * viewModel.zoom, y: CGFloat(displayY) * viewModel.zoom)
                                         .allowsHitTesting(false)
@@ -66,9 +75,17 @@ struct SheetCanvas: View {
                                     .fill(selectedPlacementID == placement.id ? Color.accentColor.opacity(0.13) : .clear)
                                     .overlay {
                                         Rectangle()
-                                            .stroke(selectedPlacementID == placement.id ? Color.accentColor : Color.white.opacity(0.6), lineWidth: selectedPlacementID == placement.id ? 2 : 1)
+                                            .stroke(
+                                                selectedPlacementID == placement.id
+                                                    ? Color.accentColor
+                                                    : Color.white.opacity(0.6),
+                                                lineWidth: selectedPlacementID == placement.id ? 2 : 1
+                                            )
                                     }
-                                    .frame(width: CGFloat(asset.width) * viewModel.zoom, height: CGFloat(asset.height) * viewModel.zoom)
+                                    .frame(
+                                        width: CGFloat(asset.width) * viewModel.zoom,
+                                        height: CGFloat(asset.height) * viewModel.zoom
+                                    )
                                     .offset(x: CGFloat(displayX) * viewModel.zoom, y: CGFloat(displayY) * viewModel.zoom)
                                     .contentShape(Rectangle())
                                     .onTapGesture { selectedPlacementID = placement.id }
@@ -89,12 +106,20 @@ struct SheetCanvas: View {
                 .background(AppPalette.canvas)
                 Divider()
                 HStack(spacing: 10) {
-                    Button { viewModel.zoom = max(SheetCanvasConstants.minimumZoom, viewModel.zoom - 1) } label: { Image(systemName: "minus") }
+                    Button {
+                        viewModel.zoom = max(SheetCanvasConstants.minimumZoom, viewModel.zoom - 1)
+                    } label: {
+                        Image(systemName: "minus")
+                    }
                         .buttonStyle(.borderless)
                         .help("Zoom out")
                     Slider(value: $viewModel.zoom, in: SheetCanvasConstants.minimumZoom...SheetCanvasConstants.maximumZoom, step: 1)
                         .frame(width: 150)
-                    Button { viewModel.zoom = min(SheetCanvasConstants.maximumZoom, viewModel.zoom + 1) } label: { Image(systemName: "plus") }
+                    Button {
+                        viewModel.zoom = min(SheetCanvasConstants.maximumZoom, viewModel.zoom + 1)
+                    } label: {
+                        Image(systemName: "plus")
+                    }
                         .buttonStyle(.borderless)
                         .help("Zoom in")
                     Text("\(Int(viewModel.zoom))×")
@@ -118,7 +143,7 @@ struct SheetCanvas: View {
                     Text("A sheet is a canvas where you compose sprites for export.")
                         .font(.callout)
                         .foregroundStyle(AppPalette.muted)
-                    Button("New Spritesheet", systemImage: "plus") { document.createSheet() }
+                    Button("New Spritesheet", systemImage: "plus") { viewModel.createSheet() }
                         .buttonStyle(.borderedProminent)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -128,7 +153,7 @@ struct SheetCanvas: View {
         .background(AppPalette.canvas)
         .onDeleteCommand {
             guard let sheet = document.selectedSheet, let selectedPlacementID else { return }
-            document.removePlacement(sheetID: sheet.id, placementID: selectedPlacementID)
+            viewModel.removePlacement(sheetID: sheet.id, placementID: selectedPlacementID)
             self.selectedPlacementID = nil
         }
     }

@@ -27,12 +27,8 @@ struct SpriteSheet: Codable, Hashable, Identifiable, Sendable {
         self.borderEffect = borderEffect
     }
 
-    private enum CodingKeys: String, CodingKey {
-        case id, name, canvasWidth, canvasHeight, gridSize, placements, borderEffect
-    }
-
     init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let container = try decoder.container(keyedBy: SpriteSheetCodingKeys.self)
         self.id = try container.decode(UUID.self, forKey: .id)
         self.name = try container.decode(String.self, forKey: .name)
         self.canvasWidth = max(1, try container.decode(Int.self, forKey: .canvasWidth))

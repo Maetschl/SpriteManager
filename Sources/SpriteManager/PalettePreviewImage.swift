@@ -65,7 +65,12 @@ struct PalettePreviewImage: View {
                             .offset(offset)
                         if let highlightedColorID,
                            let highlight = try? document.highlightedSheet(sheet, mode: mode, colorID: highlightedColorID) {
-                            Image(nsImage: NSImage(cgImage: highlight, size: NSSize(width: sheet.canvasWidth, height: sheet.canvasHeight)))
+                            Image(
+                                nsImage: NSImage(
+                                    cgImage: highlight,
+                                    size: NSSize(width: sheet.canvasWidth, height: sheet.canvasHeight)
+                                )
+                            )
                                 .interpolation(.none)
                                 .resizable()
                                 .frame(width: imageRect.width, height: imageRect.height)

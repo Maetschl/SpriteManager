@@ -26,16 +26,16 @@ struct SheetInspector: View {
                         ))
                         .textFieldStyle(.roundedBorder)
                         HStack(spacing: 8) {
-                            labeledInteger("Width", value: Binding(
+                            SheetInspectorIntegerField("Width", value: Binding(
                                 get: { document.selectedSheet?.canvasWidth ?? sheet.canvasWidth },
                                 set: { viewModel.updateWidth(sheet.id, value: $0) }
                             ))
-                            labeledInteger("Height", value: Binding(
+                            SheetInspectorIntegerField("Height", value: Binding(
                                 get: { document.selectedSheet?.canvasHeight ?? sheet.canvasHeight },
                                 set: { viewModel.updateHeight(sheet.id, value: $0) }
                             ))
                         }
-                        labeledInteger("Grid size", value: Binding(
+                        SheetInspectorIntegerField("Grid size", value: Binding(
                             get: { document.selectedSheet?.gridSize ?? sheet.gridSize },
                             set: { viewModel.updateGridSize(sheet.id, value: $0) }
                         ))
@@ -104,16 +104,26 @@ struct SheetInspector: View {
                                             }
                                             HStack(spacing: 8) {
                                                 IntegerField("X", value: Binding(
-                                                    get: { document.selectedSheet?.placements.first(where: { $0.id == placement.id })?.x ?? placement.x },
+                                                    get: {
+                                                        document.selectedSheet?.placements.first { $0.id == placement.id }?.x
+                                                            ?? placement.x
+                                                    },
                                                     set: { value in
-                                                        let current = document.selectedSheet?.placements.first(where: { $0.id == placement.id }) ?? placement
+                                                        let current = document.selectedSheet?.placements.first {
+                                                            $0.id == placement.id
+                                                        } ?? placement
                                                         viewModel.movePlacement(placement, in: sheet.id, x: value, y: current.y)
                                                     }
                                                 )).labelsHidden()
                                                 IntegerField("Y", value: Binding(
-                                                    get: { document.selectedSheet?.placements.first(where: { $0.id == placement.id })?.y ?? placement.y },
+                                                    get: {
+                                                        document.selectedSheet?.placements.first { $0.id == placement.id }?.y
+                                                            ?? placement.y
+                                                    },
                                                     set: { value in
-                                                        let current = document.selectedSheet?.placements.first(where: { $0.id == placement.id }) ?? placement
+                                                        let current = document.selectedSheet?.placements.first {
+                                                            $0.id == placement.id
+                                                        } ?? placement
                                                         viewModel.movePlacement(placement, in: sheet.id, x: current.x, y: value)
                                                     }
                                                 )).labelsHidden()
@@ -124,10 +134,18 @@ struct SheetInspector: View {
                                                         .font(.caption)
                                                         .foregroundStyle(AppPalette.muted)
                                                     Spacer()
-                                                    Button { viewModel.shiftSprite(asset.id, dx: -1, dy: 0) } label: { Image(systemName: "arrow.left") }
-                                                    Button { viewModel.shiftSprite(asset.id, dx: 1, dy: 0) } label: { Image(systemName: "arrow.right") }
-                                                    Button { viewModel.shiftSprite(asset.id, dx: 0, dy: -1) } label: { Image(systemName: "arrow.up") }
-                                                    Button { viewModel.shiftSprite(asset.id, dx: 0, dy: 1) } label: { Image(systemName: "arrow.down") }
+                                                    Button { viewModel.shiftSprite(asset.id, dx: -1, dy: 0) } label: {
+                                                        Image(systemName: "arrow.left")
+                                                    }
+                                                    Button { viewModel.shiftSprite(asset.id, dx: 1, dy: 0) } label: {
+                                                        Image(systemName: "arrow.right")
+                                                    }
+                                                    Button { viewModel.shiftSprite(asset.id, dx: 0, dy: -1) } label: {
+                                                        Image(systemName: "arrow.up")
+                                                    }
+                                                    Button { viewModel.shiftSprite(asset.id, dx: 0, dy: 1) } label: {
+                                                        Image(systemName: "arrow.down")
+                                                    }
                                                     Button("Edit") { onEditSprite(asset.id) }
                                                         .buttonStyle(.bordered)
                                                         .controlSize(.small)
@@ -137,7 +155,12 @@ struct SheetInspector: View {
                                             }
                                         }
                                         .padding(9)
-                                        .background(selectedPlacementID == placement.id ? Color.accentColor.opacity(0.12) : Color.primary.opacity(0.04), in: RoundedRectangle(cornerRadius: 8))
+                                        .background(
+                                            selectedPlacementID == placement.id
+                                                ? Color.accentColor.opacity(0.12)
+                                                : Color.primary.opacity(0.04),
+                                            in: RoundedRectangle(cornerRadius: 8)
+                                        )
                                     }
                                 }
                             }
@@ -188,14 +211,5 @@ struct SheetInspector: View {
         .background(.regularMaterial)
     }
 
-    private func labeledInteger(_ title: String, value: Binding<Int>) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.caption)
-                .foregroundStyle(AppPalette.muted)
-            IntegerField(title, value: value)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
 }
 

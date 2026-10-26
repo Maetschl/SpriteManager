@@ -64,12 +64,20 @@ struct SpriteCanvas: View {
                 .background(AppPalette.canvas)
                 Divider()
                 HStack(spacing: 10) {
-                    Button { viewModel.zoom = max(SpriteCanvasConstants.minimumZoom, viewModel.zoom - 1) } label: { Image(systemName: "minus") }
+                    Button {
+                        viewModel.zoom = max(SpriteCanvasConstants.minimumZoom, viewModel.zoom - 1)
+                    } label: {
+                        Image(systemName: "minus")
+                    }
                         .buttonStyle(.borderless)
                         .help("Zoom out")
                     Slider(value: $viewModel.zoom, in: SpriteCanvasConstants.minimumZoom...SpriteCanvasConstants.maximumZoom, step: 1)
                         .frame(width: 150)
-                    Button { viewModel.zoom = min(SpriteCanvasConstants.maximumZoom, viewModel.zoom + 1) } label: { Image(systemName: "plus") }
+                    Button {
+                        viewModel.zoom = min(SpriteCanvasConstants.maximumZoom, viewModel.zoom + 1)
+                    } label: {
+                        Image(systemName: "plus")
+                    }
                         .buttonStyle(.borderless)
                         .help("Zoom in")
                     Text("\(Int(viewModel.zoom))×")

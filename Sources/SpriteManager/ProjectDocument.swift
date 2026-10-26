@@ -3,14 +3,6 @@ import SwiftUI
 import UniformTypeIdentifiers
 import AppKit
 
-struct ProjectEditState {
-    let project: SpriteProject
-    let assets: [UUID: SpriteAsset]
-    let pixelData: [UUID: Data]
-    let dirtyAssetIDs: Set<UUID>
-    let pendingPalette: ColorPalette?
-}
-
 @MainActor
 final class ProjectDocument: @preconcurrency ReferenceFileDocument, ObservableObject {
     typealias Snapshot = ProjectSnapshot
@@ -89,7 +81,8 @@ final class ProjectDocument: @preconcurrency ReferenceFileDocument, ObservableOb
             }
         }
         self.selectedSpriteID = manifest.assets.first?.id
-        self.isDirty = manifest.schemaVersion < ProjectManifest.currentSchemaVersion || manifest.project.schemaVersion < SpriteProject.currentSchemaVersion
+        self.isDirty = manifest.schemaVersion < ProjectManifest.currentSchemaVersion
+            || manifest.project.schemaVersion < SpriteProject.currentSchemaVersion
         observeLibrary()
     }
 
@@ -271,7 +264,14 @@ final class ProjectDocument: @preconcurrency ReferenceFileDocument, ObservableOb
         markDirty()
     }
 
-    func updateSheet(_ sheetID: UUID, name: String? = nil, width: Int? = nil, height: Int? = nil, gridSize: Int? = nil, border: BorderEffect? = nil) {
+    func updateSheet(
+        _ sheetID: UUID,
+        name: String? = nil,
+        width: Int? = nil,
+        height: Int? = nil,
+        gridSize: Int? = nil,
+        border: BorderEffect? = nil
+    ) {
         guard let index = project.sheets.firstIndex(where: { $0.id == sheetID }) else { return }
         recordUndo()
         if let name { project.sheets[index].name = name }
@@ -432,7 +432,12 @@ final class ProjectDocument: @preconcurrency ReferenceFileDocument, ObservableOb
                 "enabled": sheet.borderEffect.enabled,
                 "thickness": sheet.borderEffect.thickness,
                 "algorithmVersion": sheet.borderEffect.algorithmVersion,
-                "color": ["r": sheet.borderEffect.color.r, "g": sheet.borderEffect.color.g, "b": sheet.borderEffect.color.b, "a": sheet.borderEffect.color.a]
+                "color": [
+                    "r": sheet.borderEffect.color.r,
+                    "g": sheet.borderEffect.color.g,
+                    "b": sheet.borderEffect.color.b,
+                    "a": sheet.borderEffect.color.a
+                ]
             ],
             "sprites": placements
         ]
@@ -561,18 +566,42 @@ final class ProjectDocument: @preconcurrency ReferenceFileDocument, ObservableOb
 
     func undo() {
         guard let state = undoStack.popLast() else { return }
-        redoStack.append(ProjectEditState(project: project, assets: assets, pixelData: pixelData, dirtyAssetIDs: dirtyAssetIDs, pendingPalette: pendingPalette))
+        redoStack.append(
+            ProjectEditState(
+                project: project,
+                assets: assets,
+                pixelData: pixelData,
+                dirtyAssetIDs: dirtyAssetIDs,
+                pendingPalette: pendingPalette
+            )
+        )
         restore(state)
     }
 
     func redo() {
         guard let state = redoStack.popLast() else { return }
-        undoStack.append(ProjectEditState(project: project, assets: assets, pixelData: pixelData, dirtyAssetIDs: dirtyAssetIDs, pendingPalette: pendingPalette))
+        undoStack.append(
+            ProjectEditState(
+                project: project,
+                assets: assets,
+                pixelData: pixelData,
+                dirtyAssetIDs: dirtyAssetIDs,
+                pendingPalette: pendingPalette
+            )
+        )
         restore(state)
     }
 
     private func recordUndo() {
-        undoStack.append(ProjectEditState(project: project, assets: assets, pixelData: pixelData, dirtyAssetIDs: dirtyAssetIDs, pendingPalette: pendingPalette))
+        undoStack.append(
+            ProjectEditState(
+                project: project,
+                assets: assets,
+                pixelData: pixelData,
+                dirtyAssetIDs: dirtyAssetIDs,
+                pendingPalette: pendingPalette
+            )
+        )
         if undoStack.count > 50 { undoStack.removeFirst() }
         redoStack.removeAll()
     }
@@ -595,8 +624,14 @@ final class ProjectDocument: @preconcurrency ReferenceFileDocument, ObservableOb
         let sheet = project.sheets[sheetIndex]
         for placementIndex in project.sheets[sheetIndex].placements.indices {
             guard let asset = asset(for: project.sheets[sheetIndex].placements[placementIndex].spriteID) else { continue }
-            project.sheets[sheetIndex].placements[placementIndex].x = min(max(0, project.sheets[sheetIndex].placements[placementIndex].x), max(0, sheet.canvasWidth - asset.width))
-            project.sheets[sheetIndex].placements[placementIndex].y = min(max(0, project.sheets[sheetIndex].placements[placementIndex].y), max(0, sheet.canvasHeight - asset.height))
+            project.sheets[sheetIndex].placements[placementIndex].x = min(
+                max(0, project.sheets[sheetIndex].placements[placementIndex].x),
+                max(0, sheet.canvasWidth - asset.width)
+            )
+            project.sheets[sheetIndex].placements[placementIndex].y = min(
+                max(0, project.sheets[sheetIndex].placements[placementIndex].y),
+                max(0, sheet.canvasHeight - asset.height)
+            )
         }
     }
 
@@ -615,7 +650,11 @@ final class ProjectDocument: @preconcurrency ReferenceFileDocument, ObservableOb
     }
 
     private func observeLibrary() {
-        observer = NotificationCenter.default.addObserver(forName: .spriteAssetDidChange, object: library, queue: .main) { [weak self] notification in
+        observer = NotificationCenter.default.addObserver(
+            forName: .spriteAssetDidChange,
+            object: library,
+            queue: .main
+        ) { [weak self] notification in
             guard let id = notification.userInfo?["id"] as? UUID else { return }
             MainActor.assumeIsolated {
                 guard let self else { return }
@@ -679,7 +718,12 @@ final class ProjectDocument: @preconcurrency ReferenceFileDocument, ObservableOb
         return nil
     }
 
-    private func canPlace(asset sprite: SpriteAsset, at position: PlacementPosition, in sheet: SpriteSheet, excluding placementID: UUID?) -> Bool {
+    private func canPlace(
+        asset sprite: SpriteAsset,
+        at position: PlacementPosition,
+        in sheet: SpriteSheet,
+        excluding placementID: UUID?
+    ) -> Bool {
         guard position.x >= 0, position.y >= 0,
               position.x + sprite.width <= sheet.canvasWidth,
               position.y + sprite.height <= sheet.canvasHeight else { return false }
@@ -706,7 +750,9 @@ final class ProjectDocument: @preconcurrency ReferenceFileDocument, ObservableOb
     }
 
     private func safeName(_ name: String) -> String {
-        let value = name.replacingOccurrences(of: "[^A-Za-z0-9_-]+", with: "-", options: .regularExpression).trimmingCharacters(in: CharacterSet(charactersIn: "-"))
+        let value = name
+            .replacingOccurrences(of: "[^A-Za-z0-9_-]+", with: "-", options: .regularExpression)
+            .trimmingCharacters(in: CharacterSet(charactersIn: "-"))
         return value.isEmpty ? "spritesheet" : value
     }
 }

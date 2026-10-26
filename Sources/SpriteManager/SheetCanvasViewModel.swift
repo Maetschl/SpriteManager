@@ -69,5 +69,13 @@ final class SheetCanvasViewModel: ObservableObject {
             document.errorMessage = error.localizedDescription
         }
     }
+
+    func createSheet() {
+        document.createSheet()
+    }
+
+    func removePlacement(sheetID: UUID, placementID: UUID) {
+        document.removePlacement(sheetID: sheetID, placementID: placementID)
+    }
 }
 

@@ -33,7 +33,9 @@ final class SpriteManagerAppDelegate: NSObject, NSApplicationDelegate {
         DispatchQueue.main.async {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 let controller = NSDocumentController.shared
-                if controller.documents.contains(where: { $0.fileURL == nil }) && !controller.documents.contains(where: { $0.fileURL != nil }) {
+                let hasUntitledDocument = controller.documents.contains { $0.fileURL == nil }
+                let hasSavedDocument = controller.documents.contains { $0.fileURL != nil }
+                if hasUntitledDocument && !hasSavedDocument {
                     for window in NSApp.windows {
                         window.orderOut(nil)
                     }

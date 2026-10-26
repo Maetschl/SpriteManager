@@ -24,7 +24,13 @@ struct PaletteWorkspace: View {
             )
                 .navigationSplitViewColumnWidth(min: 240, ideal: 320, max: 480)
         } content: {
-            PaletteGrid(document: document, selectedColorID: $viewModel.selectedPaletteColorID, onSelectColor: viewModel.selectColor)
+            PaletteGrid(
+                document: document,
+                selectedColorID: $viewModel.selectedPaletteColorID,
+                onSelectColor: viewModel.selectColor,
+                onCreatePalette: viewModel.createPalette,
+                onRegeneratePalette: viewModel.regeneratePalette
+            )
                 .navigationSplitViewColumnWidth(min: 440, ideal: 700, max: 1400)
         } detail: {
             PaletteInspector(document: document, selectedColorID: $viewModel.selectedPaletteColorID)

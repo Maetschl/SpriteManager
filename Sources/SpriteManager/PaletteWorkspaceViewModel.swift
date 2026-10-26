@@ -68,4 +68,12 @@ final class PaletteWorkspaceViewModel: ObservableObject {
             self.highlightedColorID = nil
         }
     }
+
+    func createPalette() {
+        document.createPalette()
+    }
+
+    func regeneratePalette() {
+        document.regeneratePalette()
+    }
 }

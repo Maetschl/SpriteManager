@@ -18,6 +18,10 @@ final class SpriteManagerDocumentViewModel: ObservableObject {
         document.errorMessage != nil || importError != nil
     }
 
+    var isDirty: Bool { document.isDirty }
+    var canUndo: Bool { document.canUndo }
+    var canRedo: Bool { document.canRedo }
+
     var errorText: String {
         document.errorMessage ?? importError ?? "Unknown error"
     }
@@ -26,7 +30,10 @@ final class SpriteManagerDocumentViewModel: ObservableObject {
         guard let id = document.conflictAssetIDs.first, let asset = document.assets[id] else {
             return "A project sprite conflicts with the global library."
         }
-        return asset.name + " (" + String(id.uuidString.prefix(8)) + ") exists in the global library with different pixels. Choose which version should become the shared source."
+        return asset.name
+            + " ("
+            + String(id.uuidString.prefix(8))
+            + ") exists in the global library with different pixels. Choose which version should become the shared source."
     }
 
     func importFiles(_ result: Result<[URL], Error>) {
@@ -57,6 +64,18 @@ final class SpriteManagerDocumentViewModel: ObservableObject {
 
     func save() {
         NSApp.sendAction(#selector(NSDocument.save(_:)), to: nil, from: nil)
+    }
+
+    func undo() {
+        document.undo()
+    }
+
+    func redo() {
+        document.redo()
+    }
+
+    func projectNameDidChange() {
+        document.isDirty = true
     }
 
     func selectSpriteForEditing(_ spriteID: UUID) {

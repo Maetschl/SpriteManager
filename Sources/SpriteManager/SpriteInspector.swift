@@ -4,23 +4,26 @@ import UniformTypeIdentifiers
 
 struct SpriteInspector: View {
     @ObservedObject var document: ProjectDocument
+    @StateObject private var viewModel: SpriteInspectorViewModel
+
+    init(document: ProjectDocument) {
+        self.document = document
+        _viewModel = StateObject(wrappedValue: SpriteInspectorViewModel(document: document))
+    }
 
     var body: some View {
         ScrollView {
             if let asset = document.selectedAsset {
                 VStack(alignment: .leading, spacing: 18) {
                     InspectorSection(title: "Sprite") {
-                        TextField("Name", text: Binding(
-                            get: { document.asset(for: asset.id)?.name ?? asset.name },
-                            set: { document.updateAssetName(asset.id, name: $0) }
-                        ))
+                        TextField("Name", text: viewModel.nameBinding(for: asset))
                         .textFieldStyle(.roundedBorder)
                         LabeledContent("Category", value: asset.category.displayName)
                         LabeledContent("Dimensions", value: "\(asset.width) × \(asset.height) px")
                         LabeledContent("Source file", value: asset.originalFileName)
                         if document.assets[asset.id] == nil {
                             Button("Include in project", systemImage: "plus.circle.fill") {
-                                document.includeAssetInProject(asset.id)
+                                viewModel.includeInProject(asset.id)
                             }
                             .buttonStyle(.borderedProminent)
                             Text("This asset is in the global library. Include it to package it with this project.")
@@ -36,8 +39,7 @@ struct SpriteInspector: View {
                                 .lineLimit(2)
                             Spacer(minLength: 4)
                             Button {
-                                NSPasteboard.general.clearContents()
-                                NSPasteboard.general.setString(asset.id.uuidString, forType: .string)
+                                viewModel.copyUUID(asset.id)
                             } label: {
                                 Image(systemName: "doc.on.doc")
                             }
@@ -47,7 +49,10 @@ struct SpriteInspector: View {
                     }
                     InspectorSection(title: "Pixel editing") {
                         Label("Drag the image to shift its pixels.", systemImage: "hand.draw")
-                        Text("The frame stays \(asset.width) × \(asset.height) px. Pixels leaving the frame are clipped and transparent pixels fill the exposed area.")
+                        Text(
+                            "The frame stays \(asset.width) × \(asset.height) px. "
+                            + "Pixels leaving the frame are clipped and transparent pixels fill the exposed area."
+                        )
                             .font(.caption)
                             .foregroundStyle(AppPalette.muted)
                     }

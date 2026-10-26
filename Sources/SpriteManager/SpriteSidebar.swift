@@ -13,40 +13,6 @@ struct SpriteSidebar: View {
         _viewModel = StateObject(wrappedValue: SpriteSidebarViewModel(document: document))
     }
 
-    private func assetRow(_ asset: SpriteAsset) -> some View {
-        HStack(spacing: 8) {
-            AssetThumbnail(document: document, asset: asset)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(asset.name).lineLimit(1)
-                Text("\(asset.width) × \(asset.height) px")
-                    .font(.caption)
-                    .foregroundStyle(AppPalette.muted)
-            }
-            Spacer(minLength: 4)
-            if document.dirtyAssetIDs.contains(asset.id) {
-                Circle()
-                    .fill(.orange)
-                    .frame(width: 7, height: 7)
-                    .help("Unsaved sprite changes")
-            }
-        }
-        .tag(asset.id)
-        .padding(.vertical, 2)
-    }
-
-    private func sectionLabel(_ title: String, count: Int, icon: String) -> some View {
-        Label {
-            HStack(spacing: 6) {
-                Text(title)
-                Text("\(count)")
-                    .font(.caption2.monospacedDigit())
-                    .foregroundStyle(AppPalette.muted)
-            }
-        } icon: {
-            Image(systemName: icon)
-        }
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .firstTextBaseline) {
@@ -63,20 +29,36 @@ struct SpriteSidebar: View {
             SearchField(text: $viewModel.search, placeholder: "Search by name or UUID")
             List(selection: $document.selectedSpriteID) {
                 DisclosureGroup(isExpanded: $viewModel.assignedExpanded) {
-                    ForEach(viewModel.assignedAssets) { asset in assetRow(asset) }
+                    ForEach(viewModel.assignedAssets) { asset in
+                        SpriteSidebarAssetRow(document: document, asset: asset)
+                    }
                 } label: {
-                    sectionLabel("Assigned", count: viewModel.assignedAssets.count, icon: "square.stack.3d.up")
+                    SpriteSidebarSectionLabel(
+                        title: "Assigned",
+                        count: viewModel.assignedAssets.count,
+                        icon: "square.stack.3d.up"
+                    )
                 }
                 DisclosureGroup(isExpanded: $viewModel.unassignedExpanded) {
-                    ForEach(viewModel.unassignedAssets) { asset in assetRow(asset) }
+                    ForEach(viewModel.unassignedAssets) { asset in
+                        SpriteSidebarAssetRow(document: document, asset: asset)
+                    }
                 } label: {
-                    sectionLabel("Unassigned", count: viewModel.unassignedAssets.count, icon: "tray")
+                    SpriteSidebarSectionLabel(
+                        title: "Unassigned",
+                        count: viewModel.unassignedAssets.count,
+                        icon: "tray"
+                    )
                 }
             }
             .listStyle(.sidebar)
             .overlay {
                 if viewModel.filteredAssets.isEmpty {
-                    ContentUnavailableView(viewModel.emptyTitle, systemImage: viewModel.emptySystemImage, description: Text(viewModel.emptyDescription))
+                    ContentUnavailableView(
+                        viewModel.emptyTitle,
+                        systemImage: viewModel.emptySystemImage,
+                        description: Text(viewModel.emptyDescription)
+                    )
                         .allowsHitTesting(false)
                 }
             }

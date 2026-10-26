@@ -33,13 +33,13 @@ struct SpriteManagerDocumentView: View {
             ToolbarItemGroup {
                 Button("Load Assets", systemImage: "square.and.arrow.down") { viewModel.showingImporter = true }
                 Divider()
-                Button("Undo", systemImage: "arrow.uturn.backward") { viewModel.document.undo() }
-                    .disabled(!viewModel.document.canUndo)
-                Button("Redo", systemImage: "arrow.uturn.forward") { viewModel.document.redo() }
-                    .disabled(!viewModel.document.canRedo)
+                Button("Undo", systemImage: "arrow.uturn.backward") { viewModel.undo() }
+                    .disabled(!viewModel.canUndo)
+                Button("Redo", systemImage: "arrow.uturn.forward") { viewModel.redo() }
+                    .disabled(!viewModel.canRedo)
                 Divider()
                 Button("Save Changes", systemImage: "checkmark.circle.fill", action: viewModel.save)
-                    .disabled(!viewModel.document.isDirty)
+                    .disabled(!viewModel.isDirty)
             }
         }
         .fileImporter(
@@ -68,7 +68,7 @@ struct SpriteManagerDocumentView: View {
         } message: {
             Text(viewModel.conflictText)
         }
-        .onChange(of: viewModel.document.project.name) { _, _ in viewModel.document.isDirty = true }
+        .onChange(of: viewModel.document.project.name) { _, _ in viewModel.projectNameDidChange() }
         .overlay {
             WindowCloseGuard(document: viewModel.document)
                 .frame(width: 1, height: 1)
