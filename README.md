@@ -11,6 +11,12 @@ SpriteManager is a native macOS 14+ SwiftUI/AppKit application for managing pixe
 - Xcode-style Welcome window with native recent projects, Create/Open actions, `Window > Welcome to SpriteManager`, and `⇧⌘1`.
 - Explicit saving through `Save Changes`, `File > Save`, or `⌘S`.
 
+## Welcome screen
+
+![SpriteManager Welcome screen](docs/welcome-screen.png)
+
+The Welcome screen provides quick access to recent projects and the actions to create or open a `.pixproj` project.
+
 ## Project structure
 
 The source is intentionally split so each model, view, view model, store, document type, and utility has a focused file. Views compose controls and bindings; state transitions, filtering, rendering actions, import/export, and document coordination live in `*ViewModel` or model/store types.
