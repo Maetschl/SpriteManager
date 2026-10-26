@@ -13,7 +13,7 @@ SpriteManager is a native macOS 14+ SwiftUI/AppKit application for managing pixe
 
 ## Welcome screen
 
-![SpriteManager Welcome screen](docs/welcome-screen.jpg)
+![SpriteManager Welcome screen](docs/welcome-screen.png)
 
 The Welcome screen provides quick access to recent projects and the actions to create or open a `.pixproj` project.
 
