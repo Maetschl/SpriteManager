@@ -4,6 +4,12 @@ import UniformTypeIdentifiers
 
 struct ProjectHeader: View {
     @ObservedObject var document: ProjectDocument
+    @StateObject private var viewModel: ProjectHeaderViewModel
+
+    init(document: ProjectDocument) {
+        self.document = document
+        _viewModel = StateObject(wrappedValue: ProjectHeaderViewModel(document: document))
+    }
 
     var body: some View {
         HStack(spacing: 12) {
@@ -13,30 +19,27 @@ struct ProjectHeader: View {
                 .frame(width: 32, height: 32)
                 .background(Color.accentColor.opacity(0.14), in: RoundedRectangle(cornerRadius: 9))
             VStack(alignment: .leading, spacing: 2) {
-                TextField("Project name", text: Binding(
-                    get: { document.project.name },
-                    set: { document.updateProjectNameLive($0) }
-                ), onEditingChanged: { editing in
-                    if !editing { document.finishProjectNameEdit() }
+                TextField("Project name", text: viewModel.projectNameBinding, onEditingChanged: { editing in
+                    if !editing { viewModel.finishProjectNameEdit() }
                 }, onCommit: {
-                    document.finishProjectNameEdit()
+                    viewModel.finishProjectNameEdit()
                 })
                 .textFieldStyle(.plain)
                 .font(.headline)
-                Text("\(document.projectAssetCount) project sprites · \(document.project.sheets.count) sheets")
+                Text("\(viewModel.projectAssetCount) project sprites · \(viewModel.sheetCount) sheets")
                     .font(.caption)
                     .foregroundStyle(AppPalette.muted)
             }
             Spacer()
             HStack(spacing: 7) {
                 Circle()
-                    .fill(document.isDirty ? .orange : .green)
+                    .fill(viewModel.isDirty ? .orange : .green)
                     .frame(width: 7, height: 7)
-                Text(document.isDirty ? "Unsaved changes" : "Saved")
+                Text(viewModel.isDirty ? "Unsaved changes" : "Saved")
                     .font(.caption.weight(.medium))
                     .foregroundStyle(AppPalette.muted)
             }
-            .help(document.isDirty ? "Use Save Changes or cmd+s" : "Everything is saved")
+            .help(viewModel.isDirty ? "Use Save Changes or cmd+s" : "Everything is saved")
         }
         .padding(.horizontal, 18)
         .padding(.vertical, 10)

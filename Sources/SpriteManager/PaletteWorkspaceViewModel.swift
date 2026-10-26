@@ -18,6 +18,18 @@ final class PaletteWorkspaceViewModel: ObservableObject {
         self.document = document
     }
 
+    var sheets: [SpriteSheet] { document.project.sheets }
+    var effectivePalette: ColorPalette? { document.effectivePalette }
+    var selectedSheetID: UUID? { document.selectedSheetID }
+
+    var selectedSheet: SpriteSheet? {
+        if let selectedPaletteSheetID,
+           let sheet = sheets.first(where: { $0.id == selectedPaletteSheetID }) {
+            return sheet
+        }
+        return document.selectedSheet ?? sheets.first
+    }
+
     deinit {
         highlightTask?.cancel()
     }

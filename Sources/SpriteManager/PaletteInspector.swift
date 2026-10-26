@@ -54,7 +54,7 @@ struct PaletteInspector: View {
                         viewModel.colorToDelete = color
                     }
                     .buttonStyle(.bordered)
-                    .disabled((document.effectivePalette?.colors.count ?? 0) <= 1)
+                    .disabled(!viewModel.canDeleteSelectedColor)
                 }
                 .padding(16)
             } else {

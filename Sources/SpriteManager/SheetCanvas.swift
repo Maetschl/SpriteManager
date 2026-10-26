@@ -19,24 +19,24 @@ struct SheetCanvas: View {
                 Label("Composition", systemImage: "rectangle.3.group")
                     .font(.subheadline.weight(.semibold))
                 Spacer()
-                if let sheet = document.selectedSheet {
+                if let sheet = viewModel.selectedSheet {
                     Text("\(sheet.placements.count) sprites")
                         .font(.caption)
                         .foregroundStyle(AppPalette.muted)
                 }
                 Button("Export", systemImage: "square.and.arrow.up") {
-                    if let sheet = document.selectedSheet { viewModel.export(sheet) }
+                    if let sheet = viewModel.selectedSheet { viewModel.export(sheet) }
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.small)
-                .disabled(document.selectedSheet == nil)
+                .disabled(viewModel.selectedSheet == nil)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
             .background(.bar)
             Divider()
 
-            if let sheet = document.selectedSheet, let image = try? document.renderedSheet(sheet) {
+            if let sheet = viewModel.selectedSheet, let image = viewModel.renderedImage(for: sheet) {
                 ScrollView([.horizontal, .vertical]) {
                     ZStack(alignment: .topLeading) {
                         Image(nsImage: NSImage(cgImage: image, size: NSSize(width: sheet.canvasWidth, height: sheet.canvasHeight)))
@@ -48,11 +48,11 @@ struct SheetCanvas: View {
                             )
                             .background(Checkerboard())
                         ForEach(sheet.placements) { placement in
-                            if let asset = document.asset(for: placement.spriteID) {
+                            if let asset = viewModel.asset(for: placement.spriteID) {
                                 let isPreview = viewModel.dragPreview?.placementID == placement.id
                                 let displayX = isPreview ? viewModel.dragPreview?.x ?? placement.x : placement.x
                                 let displayY = isPreview ? viewModel.dragPreview?.y ?? placement.y : placement.y
-                                if isPreview, let image = document.image(for: asset.id) {
+                                if isPreview, let image = viewModel.sourceImage(for: asset.id) {
                                     Image(nsImage: image)
                                         .interpolation(.none)
                                         .resizable()
@@ -152,7 +152,7 @@ struct SheetCanvas: View {
         }
         .background(AppPalette.canvas)
         .onDeleteCommand {
-            guard let sheet = document.selectedSheet, let selectedPlacementID else { return }
+            guard let sheet = viewModel.selectedSheet, let selectedPlacementID else { return }
             viewModel.removePlacement(sheetID: sheet.id, placementID: selectedPlacementID)
             self.selectedPlacementID = nil
         }

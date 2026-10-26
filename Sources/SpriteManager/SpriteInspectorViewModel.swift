@@ -10,6 +10,12 @@ final class SpriteInspectorViewModel: ObservableObject {
         self.document = document
     }
 
+    var selectedAsset: SpriteAsset? { document.selectedAsset }
+
+    func isIncludedInProject(_ assetID: UUID) -> Bool {
+        document.assets[assetID] != nil
+    }
+
     func nameBinding(for asset: SpriteAsset) -> Binding<String> {
         Binding(
             get: { [document] in document.asset(for: asset.id)?.name ?? asset.name },

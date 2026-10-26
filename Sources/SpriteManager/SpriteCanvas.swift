@@ -25,7 +25,7 @@ struct SpriteCanvas: View {
                 .toggleStyle(.switch)
                 .controlSize(.small)
                 .font(.caption)
-                if let asset = document.selectedAsset {
+                if let asset = viewModel.selectedAsset {
                     Text("\(asset.width) × \(asset.height) px")
                         .font(.caption.monospacedDigit())
                         .foregroundStyle(AppPalette.muted)
@@ -36,7 +36,7 @@ struct SpriteCanvas: View {
             .background(.bar)
             Divider()
 
-            if let asset = document.selectedAsset, let image = document.image(for: asset.id) {
+            if let asset = viewModel.selectedAsset, let image = viewModel.image(for: asset.id) {
                 ScrollView([.horizontal, .vertical]) {
                     ZStack(alignment: .topLeading) {
                         Checkerboard()

@@ -27,8 +27,8 @@ struct SheetsWorkspace: View {
                         .padding(.vertical, 4)
                         .background(.quaternary, in: Capsule())
                 }
-                List(selection: $document.selectedSheetID) {
-                    ForEach(document.project.sheets) { sheet in
+                List(selection: viewModel.selectedSheetIDBinding) {
+                    ForEach(viewModel.sheets) { sheet in
                         VStack(alignment: .leading, spacing: 3) {
                             Text(sheet.name)
                                 .font(.subheadline.weight(.medium))
@@ -42,7 +42,7 @@ struct SheetsWorkspace: View {
                 }
                 .listStyle(.sidebar)
                 .overlay {
-                    if document.project.sheets.isEmpty {
+                    if viewModel.isEmpty {
                         ContentUnavailableView(
                             "No sheets yet",
                             systemImage: "rectangle.3.group",
@@ -55,12 +55,12 @@ struct SheetsWorkspace: View {
                     Button("New", systemImage: "plus") { viewModel.createSheet() }
                         .buttonStyle(.borderedProminent)
                     Button("Duplicate", systemImage: "plus.square.on.square") { viewModel.duplicateSelectedSheet() }
-                        .disabled(document.selectedSheet == nil)
+                        .disabled(!viewModel.hasSelectedSheet)
                         .help("Duplicate selected sheet")
                     Spacer()
                     Button("Delete", systemImage: "trash") { viewModel.prepareDelete() }
                         .buttonStyle(.borderless)
-                        .disabled(document.selectedSheet == nil)
+                        .disabled(!viewModel.hasSelectedSheet)
                         .help("Delete selected sheet")
                 }
                 .padding(.horizontal, 2)
@@ -80,7 +80,7 @@ struct SheetsWorkspace: View {
                 .navigationSplitViewColumnWidth(min: 300, ideal: 400, max: 720)
         }
         .navigationSplitViewStyle(.balanced)
-        .onChange(of: document.selectedSheetID) { _, _ in viewModel.resetPlacementSelection() }
+        .onChange(of: viewModel.selectedSheetID) { _, _ in viewModel.resetPlacementSelection() }
         .alert("Delete spritesheet?", isPresented: Binding(
             get: { viewModel.sheetToDelete != nil },
             set: { if !$0 { viewModel.sheetToDelete = nil } }

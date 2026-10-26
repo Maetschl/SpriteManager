@@ -56,7 +56,7 @@ struct SpriteManagerDocumentView: View {
             Text(viewModel.errorText)
         }
         .alert("Library conflict", isPresented: Binding(
-            get: { !viewModel.document.conflictAssetIDs.isEmpty },
+            get: { viewModel.hasConflicts },
             set: { if !$0 { viewModel.resolveConflict(useProjectVersion: false) } }
         )) {
             Button("Use Project Version") {
@@ -68,7 +68,7 @@ struct SpriteManagerDocumentView: View {
         } message: {
             Text(viewModel.conflictText)
         }
-        .onChange(of: viewModel.document.project.name) { _, _ in viewModel.projectNameDidChange() }
+        .onChange(of: viewModel.projectName) { _, _ in viewModel.projectNameDidChange() }
         .overlay {
             WindowCloseGuard(document: viewModel.document)
                 .frame(width: 1, height: 1)

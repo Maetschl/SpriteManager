@@ -102,6 +102,7 @@
 		B10000000000000000000091 /* PixelBuffer+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000091 /* PixelBuffer+Constants.swift */; };
 		B10000000000000000000092 /* SpritePlacement+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000092 /* SpritePlacement+Constants.swift */; };
 		B10000000000000000000093 /* SpriteSheet+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000093 /* SpriteSheet+Constants.swift */; };
+		B10000000000000000000094 /* ProjectHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000094 /* ProjectHeaderViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -202,6 +203,7 @@
 		B20000000000000000000091 /* PixelBuffer+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PixelBuffer+Constants.swift"; sourceTree = "<group>"; };
 		B20000000000000000000092 /* SpritePlacement+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpritePlacement+Constants.swift"; sourceTree = "<group>"; };
 		B20000000000000000000093 /* SpriteSheet+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteSheet+Constants.swift"; sourceTree = "<group>"; };
+		B20000000000000000000094 /* ProjectHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectHeaderViewModel.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -346,6 +348,7 @@
 				B20000000000000000000091 /* PixelBuffer+Constants.swift */,
 				B20000000000000000000092 /* SpritePlacement+Constants.swift */,
 				B20000000000000000000093 /* SpriteSheet+Constants.swift */,
+				B20000000000000000000094 /* ProjectHeaderViewModel.swift */,
 			);
 			path = "SpriteManager";
 			sourceTree = "<group>";
@@ -508,6 +511,7 @@
 				B10000000000000000000091 /* PixelBuffer+Constants.swift in Sources */,
 				B10000000000000000000092 /* SpritePlacement+Constants.swift in Sources */,
 				B10000000000000000000093 /* SpriteSheet+Constants.swift in Sources */,
+				B10000000000000000000094 /* ProjectHeaderViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -3,7 +3,7 @@ import AppKit
 import UniformTypeIdentifiers
 
 struct PaletteGrid: View {
-    @ObservedObject var document: ProjectDocument
+    let palette: ColorPalette?
     @Binding var selectedColorID: UUID?
     let onSelectColor: (UUID) -> Void
     let onCreatePalette: () -> Void
@@ -16,7 +16,7 @@ struct PaletteGrid: View {
                 Label("Color Pallete", systemImage: "paintpalette")
                     .font(.subheadline.weight(.semibold))
                 Spacer()
-                if let palette = document.effectivePalette {
+                if let palette {
                     Text("\(palette.colors.count) colors")
                         .font(.caption)
                         .foregroundStyle(AppPalette.muted)
@@ -32,7 +32,7 @@ struct PaletteGrid: View {
             .background(.bar)
             Divider()
 
-            if let palette = document.effectivePalette {
+            if let palette {
                 if palette.colors.isEmpty {
                     VStack(spacing: 12) {
                         Image(systemName: "paintpalette")

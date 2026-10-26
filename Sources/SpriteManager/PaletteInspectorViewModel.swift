@@ -20,6 +20,10 @@ final class PaletteInspectorViewModel: ObservableObject {
         return document.effectivePalette?.colors.first(where: { $0.id == id })
     }
 
+    var canDeleteSelectedColor: Bool {
+        (document.effectivePalette?.colors.count ?? 0) > 1
+    }
+
     func updateColor(_ colorID: UUID, color: Color) {
         let nsColor = NSColor(color).usingColorSpace(.deviceRGB) ?? .white
         document.updatePaletteColor(

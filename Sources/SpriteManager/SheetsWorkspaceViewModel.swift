@@ -15,6 +15,15 @@ final class SheetsWorkspaceViewModel: ObservableObject {
     var sheetCount: Int { document.project.sheets.count }
     var hasSelectedSheet: Bool { document.selectedSheet != nil }
     var isEmpty: Bool { document.project.sheets.isEmpty }
+    var sheets: [SpriteSheet] { document.project.sheets }
+    var selectedSheetID: UUID? { document.selectedSheetID }
+
+    var selectedSheetIDBinding: Binding<UUID?> {
+        Binding(
+            get: { [document] in document.selectedSheetID },
+            set: { [document] value in document.selectedSheetID = value }
+        )
+    }
 
     func createSheet() {
         document.createSheet()

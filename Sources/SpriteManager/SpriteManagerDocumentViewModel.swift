@@ -21,6 +21,8 @@ final class SpriteManagerDocumentViewModel: ObservableObject {
     var isDirty: Bool { document.isDirty }
     var canUndo: Bool { document.canUndo }
     var canRedo: Bool { document.canRedo }
+    var projectName: String { document.project.name }
+    var hasConflicts: Bool { !document.conflictAssetIDs.isEmpty }
 
     var errorText: String {
         document.errorMessage ?? importError ?? "Unknown error"

@@ -12,6 +12,20 @@ final class SheetCanvasViewModel: ObservableObject {
         self.document = document
     }
 
+    var selectedSheet: SpriteSheet? { document.selectedSheet }
+
+    func renderedImage(for sheet: SpriteSheet) -> CGImage? {
+        try? document.renderedSheet(sheet)
+    }
+
+    func asset(for spriteID: UUID) -> SpriteAsset? {
+        document.asset(for: spriteID)
+    }
+
+    func sourceImage(for assetID: UUID) -> NSImage? {
+        document.image(for: assetID)
+    }
+
     func updateDrag(
         sheet: SpriteSheet,
         placement: SpritePlacement,

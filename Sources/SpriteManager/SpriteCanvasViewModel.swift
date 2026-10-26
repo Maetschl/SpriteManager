@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import AppKit
 
 @MainActor
 final class SpriteCanvasViewModel: ObservableObject {
@@ -11,6 +12,12 @@ final class SpriteCanvasViewModel: ObservableObject {
 
     init(document: ProjectDocument) {
         self.document = document
+    }
+
+    var selectedAsset: SpriteAsset? { document.selectedAsset }
+
+    func image(for assetID: UUID) -> NSImage? {
+        document.image(for: assetID)
     }
 
     func updateDrag(translation: CGSize) {

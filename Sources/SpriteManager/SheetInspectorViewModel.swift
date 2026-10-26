@@ -12,6 +12,17 @@ final class SheetInspectorViewModel: ObservableObject {
         self.document = document
     }
 
+    var selectedSheet: SpriteSheet? { document.selectedSheet }
+    var availableAssets: [SpriteAsset] { document.availableAssets.values.sorted { $0.name < $1.name } }
+
+    func asset(for spriteID: UUID) -> SpriteAsset? {
+        document.asset(for: spriteID)
+    }
+
+    func placement(_ placement: SpritePlacement) -> SpritePlacement {
+        selectedSheet?.placements.first { $0.id == placement.id } ?? placement
+    }
+
     var filteredAssets: [SpriteAsset] {
         document.availableAssets.values
             .filter { assetSearch.isEmpty || $0.name.localizedCaseInsensitiveContains(assetSearch) }

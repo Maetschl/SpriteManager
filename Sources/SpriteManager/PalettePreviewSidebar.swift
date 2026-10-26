@@ -4,6 +4,8 @@ import UniformTypeIdentifiers
 
 struct PalettePreviewSidebar: View {
     @ObservedObject var document: ProjectDocument
+    let sheets: [SpriteSheet]
+    let selectedSheet: SpriteSheet?
     @Binding var selectedSheetID: UUID?
     @Binding var zoom: CGFloat
     @Binding var offset: CGSize
@@ -11,18 +13,11 @@ struct PalettePreviewSidebar: View {
     let highlightOpacity: Double
     let onSelectColor: (UUID) -> Void
 
-    private var selectedSheet: SpriteSheet? {
-        if let selectedSheetID, let sheet = document.project.sheets.first(where: { $0.id == selectedSheetID }) {
-            return sheet
-        }
-        return document.selectedSheet ?? document.project.sheets.first
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Label("Sheet preview", systemImage: "rectangle.on.rectangle")
                 .font(.headline)
-            if document.project.sheets.isEmpty {
+            if sheets.isEmpty {
                 ContentUnavailableView(
                     "No sheets yet",
                     systemImage: "rectangle.3.group",
@@ -30,7 +25,7 @@ struct PalettePreviewSidebar: View {
                 )
             } else {
                 Picker("Spritesheet", selection: $selectedSheetID) {
-                    ForEach(document.project.sheets) { sheet in
+                    ForEach(sheets) { sheet in
                         Text(sheet.name).tag(Optional(sheet.id))
                     }
                 }

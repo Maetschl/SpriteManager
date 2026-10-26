@@ -13,7 +13,7 @@ struct SpriteInspector: View {
 
     var body: some View {
         ScrollView {
-            if let asset = document.selectedAsset {
+            if let asset = viewModel.selectedAsset {
                 VStack(alignment: .leading, spacing: 18) {
                     InspectorSection(title: "Sprite") {
                         TextField("Name", text: viewModel.nameBinding(for: asset))
@@ -21,7 +21,7 @@ struct SpriteInspector: View {
                         LabeledContent("Category", value: asset.category.displayName)
                         LabeledContent("Dimensions", value: "\(asset.width) × \(asset.height) px")
                         LabeledContent("Source file", value: asset.originalFileName)
-                        if document.assets[asset.id] == nil {
+                        if !viewModel.isIncludedInProject(asset.id) {
                             Button("Include in project", systemImage: "plus.circle.fill") {
                                 viewModel.includeInProject(asset.id)
                             }

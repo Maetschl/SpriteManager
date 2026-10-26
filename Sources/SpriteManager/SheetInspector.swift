@@ -17,26 +17,26 @@ struct SheetInspector: View {
 
     var body: some View {
         ScrollView {
-            if let sheet = document.selectedSheet {
+            if let sheet = viewModel.selectedSheet {
                 VStack(alignment: .leading, spacing: 18) {
                     InspectorSection(title: "Sheet") {
                         TextField("Name", text: Binding(
-                            get: { document.selectedSheet?.name ?? sheet.name },
+                            get: { viewModel.selectedSheet?.name ?? sheet.name },
                             set: { viewModel.updateName(sheet.id, value: $0) }
                         ))
                         .textFieldStyle(.roundedBorder)
                         HStack(spacing: 8) {
                             SheetInspectorIntegerField("Width", value: Binding(
-                                get: { document.selectedSheet?.canvasWidth ?? sheet.canvasWidth },
+                                get: { viewModel.selectedSheet?.canvasWidth ?? sheet.canvasWidth },
                                 set: { viewModel.updateWidth(sheet.id, value: $0) }
                             ))
                             SheetInspectorIntegerField("Height", value: Binding(
-                                get: { document.selectedSheet?.canvasHeight ?? sheet.canvasHeight },
+                                get: { viewModel.selectedSheet?.canvasHeight ?? sheet.canvasHeight },
                                 set: { viewModel.updateHeight(sheet.id, value: $0) }
                             ))
                         }
                         SheetInspectorIntegerField("Grid size", value: Binding(
-                            get: { document.selectedSheet?.gridSize ?? sheet.gridSize },
+                            get: { viewModel.selectedSheet?.gridSize ?? sheet.gridSize },
                             set: { viewModel.updateGridSize(sheet.id, value: $0) }
                         ))
                         Text("New sprites snap to this grid and use the first free cell. Existing sprites cannot overlap.")
@@ -47,7 +47,7 @@ struct SheetInspector: View {
                             .foregroundStyle(AppPalette.muted)
                     }
                     InspectorSection(title: "Add sprites") {
-                        if document.availableAssets.isEmpty {
+                        if viewModel.availableAssets.isEmpty {
                             Text("Import sprites from the Sprites tab first.")
                                 .font(.caption)
                                 .foregroundStyle(AppPalette.muted)
@@ -82,7 +82,7 @@ struct SheetInspector: View {
                         } else {
                             VStack(spacing: 8) {
                                 ForEach(sheet.placements) { placement in
-                                    if let asset = document.asset(for: placement.spriteID) {
+                                    if let asset = viewModel.asset(for: placement.spriteID) {
                                         VStack(alignment: .leading, spacing: 7) {
                                             HStack {
                                                 Button {
@@ -105,25 +105,19 @@ struct SheetInspector: View {
                                             HStack(spacing: 8) {
                                                 IntegerField("X", value: Binding(
                                                     get: {
-                                                        document.selectedSheet?.placements.first { $0.id == placement.id }?.x
-                                                            ?? placement.x
+                                                        viewModel.placement(placement).x
                                                     },
                                                     set: { value in
-                                                        let current = document.selectedSheet?.placements.first {
-                                                            $0.id == placement.id
-                                                        } ?? placement
+                                                        let current = viewModel.placement(placement)
                                                         viewModel.movePlacement(placement, in: sheet.id, x: value, y: current.y)
                                                     }
                                                 )).labelsHidden()
                                                 IntegerField("Y", value: Binding(
                                                     get: {
-                                                        document.selectedSheet?.placements.first { $0.id == placement.id }?.y
-                                                            ?? placement.y
+                                                        viewModel.placement(placement).y
                                                     },
                                                     set: { value in
-                                                        let current = document.selectedSheet?.placements.first {
-                                                            $0.id == placement.id
-                                                        } ?? placement
+                                                        let current = viewModel.placement(placement)
                                                         viewModel.movePlacement(placement, in: sheet.id, x: current.x, y: value)
                                                     }
                                                 )).labelsHidden()
@@ -168,14 +162,14 @@ struct SheetInspector: View {
                     }
                     InspectorSection(title: "Border effect") {
                         Toggle("Enable one-pixel outline", isOn: Binding(
-                            get: { document.selectedSheet?.borderEffect.enabled ?? false },
+                            get: { viewModel.selectedSheet?.borderEffect.enabled ?? false },
                             set: { value in viewModel.updateBorder(sheet, enabled: value) }
                         ))
                         .toggleStyle(.switch)
                         .controlSize(.small)
                         if sheet.borderEffect.enabled {
                             ColorPicker("Color", selection: Binding(
-                                get: { document.selectedSheet?.borderEffect.color.swiftColor ?? .white },
+                                get: { viewModel.selectedSheet?.borderEffect.color.swiftColor ?? .white },
                                 set: { color in
                                     viewModel.updateBorder(sheet, color: color)
                                 }

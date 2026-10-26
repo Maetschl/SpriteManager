@@ -15,6 +15,8 @@ struct PaletteWorkspace: View {
         NavigationSplitView {
             PalettePreviewSidebar(
                 document: document,
+                sheets: viewModel.sheets,
+                selectedSheet: viewModel.selectedSheet,
                 selectedSheetID: $viewModel.selectedPaletteSheetID,
                 zoom: $viewModel.previewZoom,
                 offset: $viewModel.previewOffset,
@@ -25,7 +27,7 @@ struct PaletteWorkspace: View {
                 .navigationSplitViewColumnWidth(min: 240, ideal: 320, max: 480)
         } content: {
             PaletteGrid(
-                document: document,
+                palette: viewModel.effectivePalette,
                 selectedColorID: $viewModel.selectedPaletteColorID,
                 onSelectColor: viewModel.selectColor,
                 onCreatePalette: viewModel.createPalette,
@@ -38,8 +40,8 @@ struct PaletteWorkspace: View {
         }
         .navigationSplitViewStyle(.balanced)
         .onAppear(perform: viewModel.prepareSelection)
-        .onChange(of: document.selectedSheetID) { _, _ in viewModel.synchronizeSheetSelection() }
-        .onChange(of: document.effectivePalette) { _, palette in
+        .onChange(of: viewModel.selectedSheetID) { _, _ in viewModel.synchronizeSheetSelection() }
+        .onChange(of: viewModel.effectivePalette) { _, palette in
             _ = palette
             viewModel.synchronizeColorSelection()
         }
