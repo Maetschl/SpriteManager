@@ -1,0 +1,168 @@
+name: Release SpriteManager
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+env:
+  NOTARIZATION_ENABLED: ${{ vars.SPRITEMANAGER_NOTARIZATION_ENABLED || 'false' }}
+
+jobs:
+  release:
+    name: Build and publish DMG
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout tagged source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate version and Git identity
+        shell: zsh
+        run: |
+          set -euo pipefail
+          tag_version="${GITHUB_REF_NAME#v}"
+          plist_version="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' Resources/Info.plist)"
+          if [[ "$tag_version" != "$plist_version" ]]; then
+            echo "Tag version $tag_version does not match Info.plist version $plist_version" >&2
+            exit 1
+          fi
+
+          expected_identity="Maetschl <maetschl@gmail.com>|Maetschl <maetschl@gmail.com>"
+          invalid_commit="$(
+            git log --format='%an <%ae>|%cn <%ce>' |
+              awk -v expected="$expected_identity" '$0 != expected { print; exit }'
+          )"
+          if [[ -n "$invalid_commit" ]]; then
+            echo "Unexpected Git identity in history: $invalid_commit" >&2
+            exit 1
+          fi
+
+          if [[ ! "$tag_version" =~ '^[0-9]+\.[0-9]+\.[0-9]+$' ]]; then
+            echo "Invalid semantic version tag: $GITHUB_REF_NAME" >&2
+            exit 1
+          fi
+
+      - name: Run Swift tests
+        run: swift test --quiet
+
+      - name: Run release script checks
+        run: zsh scripts/test-release.sh
+
+      - name: Prepare signing keychain
+        if: env.NOTARIZATION_ENABLED == 'true'
+        shell: zsh
+        env:
+          APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_DEVELOPER_ID_CERTIFICATE_BASE64 }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_DEVELOPER_ID_CERTIFICATE_PASSWORD }}
+          APPLE_KEYCHAIN_PASSWORD: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
+        run: |
+          set -euo pipefail
+          certificate_path="$RUNNER_TEMP/developer-id.p12"
+          keychain_path="$RUNNER_TEMP/spritemanager-build.keychain-db"
+          echo "$APPLE_CERTIFICATE_BASE64" | base64 --decode > "$certificate_path"
+          security create-keychain -p "$APPLE_KEYCHAIN_PASSWORD" "$keychain_path"
+          security set-keychain-settings -lut 21600 "$keychain_path"
+          security unlock-keychain -p "$APPLE_KEYCHAIN_PASSWORD" "$keychain_path"
+          security import "$certificate_path" -P "$APPLE_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$keychain_path"
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$APPLE_KEYCHAIN_PASSWORD" "$keychain_path"
+          security list-keychains -d user -s "$keychain_path"
+          security default-keychain -s "$keychain_path"
+
+      - name: Set CI build number
+        shell: zsh
+        run: /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $GITHUB_RUN_NUMBER" Resources/Info.plist
+
+      - name: Build universal application
+        shell: zsh
+        run: |
+          set -euo pipefail
+          derived_data="$RUNNER_TEMP/DerivedData"
+          if [[ "$NOTARIZATION_ENABLED" == "true" ]]; then
+            signing_flags=(
+              CODE_SIGNING_ALLOWED=YES
+              CODE_SIGNING_REQUIRED=YES
+              CODE_SIGN_IDENTITY="Developer ID Application"
+              ENABLE_HARDENED_RUNTIME=YES
+            )
+          else
+            signing_flags=(CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO)
+          fi
+
+          xcodebuild \
+            -project SpriteManager.xcodeproj \
+            -scheme SpriteManager \
+            -configuration Release \
+            -destination 'generic/platform=macOS' \
+            -derivedDataPath "$derived_data" \
+            build \
+            ARCHS='arm64 x86_64' \
+            ONLY_ACTIVE_ARCH=NO \
+            "${signing_flags[@]}"
+
+          app_path="$derived_data/Build/Products/Release/SpriteManager.app"
+          test -d "$app_path"
+          test -f "$app_path/Contents/Resources/AppIcon.icns"
+          lipo -info "$app_path/Contents/MacOS/SpriteManager" | grep -q 'arm64.*x86_64\|x86_64.*arm64'
+          built_version="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$app_path/Contents/Info.plist")"
+          [[ "$built_version" == "${GITHUB_REF_NAME#v}" ]]
+          built_number="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$app_path/Contents/Info.plist")"
+          [[ "$built_number" == "$GITHUB_RUN_NUMBER" ]]
+
+      - name: Create DMG
+        shell: zsh
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          derived_data="$RUNNER_TEMP/DerivedData"
+          app_path="$derived_data/Build/Products/Release/SpriteManager.app"
+          staging="$RUNNER_TEMP/SpriteManager-dmg-root"
+          dist="$RUNNER_TEMP/SpriteManager-dist"
+          mkdir -p "$staging" "$dist"
+          cp -R "$app_path" "$staging/SpriteManager.app"
+          ln -s /Applications "$staging/Applications"
+          hdiutil create \
+            -volname "SpriteManager $version" \
+            -srcfolder "$staging" \
+            -ov \
+            -format UDZO \
+            "$dist/SpriteManager-$version.dmg"
+          shasum -a 256 "$dist/SpriteManager-$version.dmg" > "$dist/SpriteManager-$version.dmg.sha256"
+          hdiutil imageinfo "$dist/SpriteManager-$version.dmg" >/dev/null
+
+      - name: Notarize DMG
+        if: env.NOTARIZATION_ENABLED == 'true'
+        shell: zsh
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          dist="$RUNNER_TEMP/SpriteManager-dist"
+          xcrun notarytool store-credentials SpriteManagerNotary \
+            --apple-id "$APPLE_ID" \
+            --team-id "$APPLE_TEAM_ID" \
+            --password "$APPLE_APP_SPECIFIC_PASSWORD"
+          xcrun notarytool submit "$dist/SpriteManager-$version.dmg" --keychain-profile SpriteManagerNotary --wait
+          xcrun stapler staple "$dist/SpriteManager-$version.dmg"
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: zsh
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          dist="$RUNNER_TEMP/SpriteManager-dist"
+          gh release create "$GITHUB_REF_NAME" \
+            "$dist/SpriteManager-$version.dmg" \
+            "$dist/SpriteManager-$version.dmg.sha256" \
+            --title "SpriteManager $version" \
+            --generate-notes

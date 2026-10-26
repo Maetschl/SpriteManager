@@ -39,11 +39,34 @@ zsh scripts/run-app.sh
 
 The command-line bundle is written to `.build/SpriteManager.app`. The native Xcode build produces the normal `.app` under DerivedData.
 
+## Releases
+
+The current application version is `0.1.0`. Releases use semantic versioning:
+
+- `patch` increments the final number for small fixes and maintenance changes.
+- `minor` increments the middle number for backward-compatible features.
+- `major` increments the first number only when explicitly requested.
+
+From a clean `main` worktree configured with the `Maetschl` Git identity, run one of:
+
+```sh
+./scripts/release.sh patch
+./scripts/release.sh minor
+./scripts/release.sh major
+```
+
+The script updates `Resources/Info.plist`, creates the commit and annotated tag, and pushes them to GitHub. The release workflow then runs the tests, builds a universal macOS application, creates a DMG, generates a SHA-256 checksum, and publishes a stable release at [GitHub Releases](https://github.com/Maetschl/SpriteManager/releases).
+
+The initial DMG is not signed or notarized, so macOS may display a security warning when it is opened. The workflow has optional signing and notarization steps that can be enabled later with Apple Developer credentials stored as GitHub Actions secrets; a free Apple developer account does not provide the Developer ID certificate or notarization service required for this step.
+
+To enable that path later, set the repository variable `SPRITEMANAGER_NOTARIZATION_ENABLED` to `true` and configure the secrets `APPLE_DEVELOPER_ID_CERTIFICATE_BASE64`, `APPLE_DEVELOPER_ID_CERTIFICATE_PASSWORD`, `APPLE_KEYCHAIN_PASSWORD`, `APPLE_ID`, `APPLE_TEAM_ID`, and `APPLE_APP_SPECIFIC_PASSWORD`.
+
 ## Verify
 
 ```sh
 swift build
 swift test
+zsh scripts/test-release.sh
 xcodebuild -project SpriteManager.xcodeproj -scheme SpriteManager -configuration Debug -sdk macosx CODE_SIGNING_ALLOWED=NO build
 ```
 
