@@ -1,3 +1,4 @@
+import AppKit
 import Foundation
 
 @MainActor
@@ -6,6 +7,14 @@ final class PalettePreviewImageViewModel: ObservableObject {
 
     init(document: ProjectDocument) {
         self.document = document
+    }
+
+    func renderedImage(for sheet: SpriteSheet, mode: SheetRenderMode) -> CGImage? {
+        try? document.renderedSheet(sheet, mode: mode)
+    }
+
+    func highlightedImage(for sheet: SpriteSheet, mode: SheetRenderMode, colorID: UUID) -> CGImage? {
+        try? document.highlightedSheet(sheet, mode: mode, colorID: colorID)
     }
 
     func imageRect(in size: CGSize, sheet: SpriteSheet?) -> CGRect {

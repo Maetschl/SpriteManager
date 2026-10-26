@@ -15,5 +15,12 @@ struct PalettePreviewImageViewModelTests {
         #expect(rect.midX == 100)
         #expect(rect.midY == 50)
     }
+
+    @Test func rendersEmptySheetThroughViewModel() {
+        let document = ProjectDocument()
+        let viewModel = PalettePreviewImageViewModel(document: document)
+        let sheet = SpriteSheet(name: "Empty")
+        #expect(viewModel.renderedImage(for: sheet, mode: .source)?.width == sheet.canvasWidth)
+    }
 }
 

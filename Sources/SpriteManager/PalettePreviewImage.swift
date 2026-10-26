@@ -56,7 +56,7 @@ struct PalettePreviewImage: View {
                 ZStack {
                     Checkerboard()
                     if let sheet,
-                       let image = try? document.renderedSheet(sheet, mode: mode) {
+                       let image = viewModel.renderedImage(for: sheet, mode: mode) {
                         Image(nsImage: NSImage(cgImage: image, size: NSSize(width: sheet.canvasWidth, height: sheet.canvasHeight)))
                             .interpolation(.none)
                             .resizable()
@@ -64,7 +64,11 @@ struct PalettePreviewImage: View {
                             .scaleEffect(zoom)
                             .offset(offset)
                         if let highlightedColorID,
-                           let highlight = try? document.highlightedSheet(sheet, mode: mode, colorID: highlightedColorID) {
+                           let highlight = viewModel.highlightedImage(
+                               for: sheet,
+                               mode: mode,
+                               colorID: highlightedColorID
+                           ) {
                             Image(
                                 nsImage: NSImage(
                                     cgImage: highlight,
