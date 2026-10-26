@@ -1,7 +1,29 @@
+# Xcode and Swift Package Manager
+xcuserdata/
+DerivedData/
 .build/
 .swiftpm/
-DerivedData/
-.DS_Store
-xcuserdata/
 *.xcuserstate
 *.xcresult
+
+# macOS and generated symbols
+.DS_Store
+*.hmap
+*.dSYM
+*.dSYM.zip
+
+# App packaging and dependency output
+*.ipa
+Carthage/Build/
+
+# Xcode playgrounds and workspace state
+timeline.xctimeline
+playground.xcworkspace
+
+# CocoaPods and fastlane output
+Pods/
+*.xcworkspace
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
