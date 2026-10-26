@@ -132,7 +132,10 @@ jobs:
             -ov \
             -format UDZO \
             "$dist/SpriteManager-$version.dmg"
-          shasum -a 256 "$dist/SpriteManager-$version.dmg" > "$dist/SpriteManager-$version.dmg.sha256"
+          (
+            cd "$dist"
+            shasum -a 256 "SpriteManager-$version.dmg" > "SpriteManager-$version.dmg.sha256"
+          )
           hdiutil imageinfo "$dist/SpriteManager-$version.dmg" >/dev/null
 
       - name: Notarize DMG
