@@ -10,7 +10,7 @@ struct PixelBuffer: Sendable {
     var pixels: [UInt8]
 
     init(width: Int, height: Int, pixels: [UInt8]) throws {
-        guard width > 0, height > 0, pixels.count == width * height * 4 else {
+        guard width > 0, height > 0, pixels.count == width * height * Self.bytesPerPixel else {
             throw SpriteManagerError.invalidPNG("invalid pixel dimensions")
         }
         self.width = width
@@ -29,14 +29,14 @@ struct PixelBuffer: Sendable {
     init(image: CGImage) throws {
         let width = image.width
         let height = image.height
-        var pixels = [UInt8](repeating: 0, count: width * height * 4)
+        var pixels = [UInt8](repeating: Self.transparentAlpha, count: width * height * Self.bytesPerPixel)
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         guard let context = CGContext(
             data: &pixels,
             width: width,
             height: height,
             bitsPerComponent: 8,
-            bytesPerRow: width * 4,
+            bytesPerRow: width * Self.bytesPerPixel,
             space: colorSpace,
             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
         ) else {
@@ -55,7 +55,7 @@ struct PixelBuffer: Sendable {
             width: width,
             height: height,
             bitsPerComponent: 8,
-            bytesPerRow: width * 4,
+            bytesPerRow: width * Self.bytesPerPixel,
             space: colorSpace,
             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
         ), let image = context.makeImage() else {
@@ -80,7 +80,7 @@ struct PixelBuffer: Sendable {
             width: width,
             height: height,
             bitsPerComponent: 8,
-            bytesPerRow: width * 4,
+            bytesPerRow: width * Self.bytesPerPixel,
             space: colorSpace,
             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
         ), let image = context.makeImage() else {
@@ -96,8 +96,8 @@ struct PixelBuffer: Sendable {
                 let targetX = x + dx
                 let targetY = y + dy
                 guard targetX >= 0, targetX < width, targetY >= 0, targetY < height else { continue }
-                let sourceIndex = (y * width + x) * 4
-                let targetIndex = (targetY * width + targetX) * 4
+                let sourceIndex = (y * width + x) * Self.bytesPerPixel
+                let targetIndex = (targetY * width + targetX) * Self.bytesPerPixel
                 result[targetIndex..<targetIndex + 4] = pixels[sourceIndex..<sourceIndex + 4]
             }
         }
@@ -108,8 +108,8 @@ struct PixelBuffer: Sendable {
         var result = pixels
         for y in 0..<height {
             for x in 0..<width {
-                let index = (y * width + x) * 4
-                guard pixels[index + 3] == 255 else { continue }
+                let index = (y * width + x) * Self.bytesPerPixel
+                guard pixels[index + 3] == Self.opaqueAlpha else { continue }
                 let source = PaletteRGBColor(r: pixels[index], g: pixels[index + 1], b: pixels[index + 2])
                 guard let output = palette.outputColor(for: source) else { continue }
                 result[index] = output.r
@@ -124,16 +124,16 @@ struct PixelBuffer: Sendable {
         guard thickness > 0 else { return self }
         var result = pixels
         let colorBytes = [
-            UInt8(max(0, min(255, Int(color.r * 255)))),
-            UInt8(max(0, min(255, Int(color.g * 255)))),
-            UInt8(max(0, min(255, Int(color.b * 255)))),
-            UInt8(max(0, min(255, Int(color.a * 255))))
+            UInt8(max(Int(Self.transparentAlpha), min(Int(Self.opaqueAlpha), Int(color.r * Double(Self.opaqueAlpha))))),
+            UInt8(max(Int(Self.transparentAlpha), min(Int(Self.opaqueAlpha), Int(color.g * Double(Self.opaqueAlpha))))),
+            UInt8(max(Int(Self.transparentAlpha), min(Int(Self.opaqueAlpha), Int(color.b * Double(Self.opaqueAlpha))))),
+            UInt8(max(Int(Self.transparentAlpha), min(Int(Self.opaqueAlpha), Int(color.a * Double(Self.opaqueAlpha)))))
         ]
 
         for y in 0..<height {
             for x in 0..<width {
-                let index = (y * width + x) * 4
-                guard pixels[index + 3] == 0 else { continue }
+                let index = (y * width + x) * Self.bytesPerPixel
+                guard pixels[index + 3] == Self.transparentAlpha else { continue }
                 var nearOpaque = false
                 for offsetY in -thickness...thickness {
                     for offsetX in -thickness...thickness {
@@ -141,8 +141,8 @@ struct PixelBuffer: Sendable {
                         let neighborX = x + offsetX
                         let neighborY = y + offsetY
                         guard neighborX >= 0, neighborX < width, neighborY >= 0, neighborY < height else { continue }
-                        let neighborIndex = (neighborY * width + neighborX) * 4
-                        if pixels[neighborIndex + 3] > 0 {
+                        let neighborIndex = (neighborY * width + neighborX) * Self.bytesPerPixel
+                        if pixels[neighborIndex + 3] > Self.transparentAlpha {
                             nearOpaque = true
                         }
                     }
@@ -159,7 +159,7 @@ struct PixelBuffer: Sendable {
     }
 
     subscript(x: Int, y: Int) -> (r: UInt8, g: UInt8, b: UInt8, a: UInt8) {
-        let index = (y * width + x) * 4
+        let index = (y * width + x) * Self.bytesPerPixel
         return (pixels[index], pixels[index + 1], pixels[index + 2], pixels[index + 3])
     }
 }

@@ -7,7 +7,13 @@ struct SpritePlacement: Codable, Hashable, Identifiable, Sendable {
     var y: Int
     var zIndex: Int
 
-    init(id: UUID = UUID(), spriteID: UUID, x: Int = 0, y: Int = 0, zIndex: Int = 0) {
+    init(
+        id: UUID = UUID(),
+        spriteID: UUID,
+        x: Int = SpritePlacement.defaultCoordinate,
+        y: Int = SpritePlacement.defaultCoordinate,
+        zIndex: Int = SpritePlacement.defaultZIndex
+    ) {
         self.id = id
         self.spriteID = spriteID
         self.x = x

@@ -98,6 +98,10 @@
 		B10000000000000000000087 /* SpriteSidebarAssetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000087 /* SpriteSidebarAssetRow.swift */; };
 		B10000000000000000000088 /* SpriteSidebarSectionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000088 /* SpriteSidebarSectionLabel.swift */; };
 		B10000000000000000000089 /* SheetInspectorIntegerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000089 /* SheetInspectorIntegerField.swift */; };
+		B10000000000000000000090 /* BorderEffect+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000090 /* BorderEffect+Constants.swift */; };
+		B10000000000000000000091 /* PixelBuffer+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000091 /* PixelBuffer+Constants.swift */; };
+		B10000000000000000000092 /* SpritePlacement+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000092 /* SpritePlacement+Constants.swift */; };
+		B10000000000000000000093 /* SpriteSheet+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000093 /* SpriteSheet+Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -194,6 +198,10 @@
 		B20000000000000000000087 /* SpriteSidebarAssetRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteSidebarAssetRow.swift"; sourceTree = "<group>"; };
 		B20000000000000000000088 /* SpriteSidebarSectionLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteSidebarSectionLabel.swift"; sourceTree = "<group>"; };
 		B20000000000000000000089 /* SheetInspectorIntegerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SheetInspectorIntegerField.swift"; sourceTree = "<group>"; };
+		B20000000000000000000090 /* BorderEffect+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BorderEffect+Constants.swift"; sourceTree = "<group>"; };
+		B20000000000000000000091 /* PixelBuffer+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PixelBuffer+Constants.swift"; sourceTree = "<group>"; };
+		B20000000000000000000092 /* SpritePlacement+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpritePlacement+Constants.swift"; sourceTree = "<group>"; };
+		B20000000000000000000093 /* SpriteSheet+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteSheet+Constants.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -334,6 +342,10 @@
 				B20000000000000000000087 /* SpriteSidebarAssetRow.swift */,
 				B20000000000000000000088 /* SpriteSidebarSectionLabel.swift */,
 				B20000000000000000000089 /* SheetInspectorIntegerField.swift */,
+				B20000000000000000000090 /* BorderEffect+Constants.swift */,
+				B20000000000000000000091 /* PixelBuffer+Constants.swift */,
+				B20000000000000000000092 /* SpritePlacement+Constants.swift */,
+				B20000000000000000000093 /* SpriteSheet+Constants.swift */,
 			);
 			path = "SpriteManager";
 			sourceTree = "<group>";
@@ -492,6 +504,10 @@
 				B10000000000000000000087 /* SpriteSidebarAssetRow.swift in Sources */,
 				B10000000000000000000088 /* SpriteSidebarSectionLabel.swift in Sources */,
 				B10000000000000000000089 /* SheetInspectorIntegerField.swift in Sources */,
+				B10000000000000000000090 /* BorderEffect+Constants.swift in Sources */,
+				B10000000000000000000091 /* PixelBuffer+Constants.swift in Sources */,
+				B10000000000000000000092 /* SpritePlacement+Constants.swift in Sources */,
+				B10000000000000000000093 /* SpriteSheet+Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

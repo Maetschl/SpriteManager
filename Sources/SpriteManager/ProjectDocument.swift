@@ -537,11 +537,11 @@ final class ProjectDocument: @preconcurrency ReferenceFileDocument, ObservableOb
                 guard pixel.a > 0 else { continue }
                 let color = PaletteRGBColor(r: pixel.r, g: pixel.g, b: pixel.b)
                 guard matchingColors.contains(color) else { continue }
-                let index = (y * highlight.width + x) * 4
-                highlight.pixels[index] = 255
-                highlight.pixels[index + 1] = 64
-                highlight.pixels[index + 2] = 170
-                highlight.pixels[index + 3] = 220
+                let index = (y * highlight.width + x) * PixelBuffer.bytesPerPixel
+                highlight.pixels[index + PixelBuffer.redChannelOffset] = 255
+                highlight.pixels[index + PixelBuffer.greenChannelOffset] = 64
+                highlight.pixels[index + PixelBuffer.blueChannelOffset] = 170
+                highlight.pixels[index + PixelBuffer.alphaChannelOffset] = 220
             }
         }
         return try highlight.cgImage()
@@ -695,7 +695,7 @@ final class ProjectDocument: @preconcurrency ReferenceFileDocument, ObservableOb
             for y in 0..<buffer.height {
                 for x in 0..<buffer.width {
                     let pixel = buffer[x, y]
-                    guard pixel.a == 255 else { continue }
+                    guard pixel.a == PixelBuffer.opaqueAlpha else { continue }
                     uniqueColors.insert(PaletteRGBColor(r: pixel.r, g: pixel.g, b: pixel.b))
                 }
             }
