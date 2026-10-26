@@ -1,0 +1,535 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000010000000000000006 /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000006 /* AppIcon.png */; };
+		A10000010000000000000007 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000008 /* AppIcon.icns */; };
+		B10000000000000000000001 /* AppPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000001 /* AppPalette.swift */; };
+		B10000000000000000000002 /* AssetThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000002 /* AssetThumbnail.swift */; };
+		B10000000000000000000003 /* BorderEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000003 /* BorderEffect.swift */; };
+		B10000000000000000000004 /* Checkerboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000004 /* Checkerboard.swift */; };
+		B10000000000000000000005 /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000005 /* ColorPalette.swift */; };
+		B10000000000000000000006 /* ImportDropZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000006 /* ImportDropZone.swift */; };
+		B10000000000000000000007 /* InspectorSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000007 /* InspectorSection.swift */; };
+		B10000000000000000000008 /* IntegerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000008 /* IntegerField.swift */; };
+		B10000000000000000000009 /* JSONEncoder+Pretty.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000009 /* JSONEncoder+Pretty.swift */; };
+		B10000000000000000000010 /* LibraryIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000010 /* LibraryIndex.swift */; };
+		B10000000000000000000011 /* LibraryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000011 /* LibraryStore.swift */; };
+		B10000000000000000000012 /* NotificationName+DocumentWindows.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000012 /* NotificationName+DocumentWindows.swift */; };
+		B10000000000000000000013 /* NotificationName+SpriteAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000013 /* NotificationName+SpriteAsset.swift */; };
+		B10000000000000000000014 /* OKLabColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000014 /* OKLabColor.swift */; };
+		B10000000000000000000015 /* PaletteAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000015 /* PaletteAlias.swift */; };
+		B10000000000000000000016 /* PaletteColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000016 /* PaletteColor.swift */; };
+		B10000000000000000000017 /* PaletteColorCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000017 /* PaletteColorCard.swift */; };
+		B10000000000000000000018 /* PaletteColorMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000018 /* PaletteColorMath.swift */; };
+		B10000000000000000000019 /* PaletteGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000019 /* PaletteGrid.swift */; };
+		B10000000000000000000020 /* PaletteInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000020 /* PaletteInspector.swift */; };
+		B10000000000000000000021 /* PaletteInspectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000021 /* PaletteInspectorViewModel.swift */; };
+		B10000000000000000000022 /* PalettePreviewImage+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000022 /* PalettePreviewImage+Constants.swift */; };
+		B10000000000000000000023 /* PalettePreviewImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000023 /* PalettePreviewImage.swift */; };
+		B10000000000000000000024 /* PalettePreviewImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000024 /* PalettePreviewImageViewModel.swift */; };
+		B10000000000000000000025 /* PalettePreviewSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000025 /* PalettePreviewSidebar.swift */; };
+		B10000000000000000000026 /* PaletteRGBColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000026 /* PaletteRGBColor.swift */; };
+		B10000000000000000000027 /* PaletteWorkspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000027 /* PaletteWorkspace.swift */; };
+		B10000000000000000000028 /* PaletteWorkspaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000028 /* PaletteWorkspaceViewModel.swift */; };
+		B10000000000000000000029 /* PixelBuffer+Composition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000029 /* PixelBuffer+Composition.swift */; };
+		B10000000000000000000030 /* PixelBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000030 /* PixelBuffer.swift */; };
+		B10000000000000000000031 /* PixelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000031 /* PixelData.swift */; };
+		B10000000000000000000032 /* PixelDragPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000032 /* PixelDragPreview.swift */; };
+		B10000000000000000000033 /* PixelGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000033 /* PixelGrid.swift */; };
+		B10000000000000000000034 /* PlacementDragPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000034 /* PlacementDragPreview.swift */; };
+		B10000000000000000000035 /* PlacementPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000035 /* PlacementPosition.swift */; };
+		B10000000000000000000036 /* ProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000036 /* ProjectDocument.swift */; };
+		B10000000000000000000037 /* ProjectHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000037 /* ProjectHeader.swift */; };
+		B10000000000000000000038 /* ProjectManifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000038 /* ProjectManifest.swift */; };
+		B10000000000000000000039 /* ProjectSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000039 /* ProjectSnapshot.swift */; };
+		B10000000000000000000040 /* RGBAColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000040 /* RGBAColor.swift */; };
+		B10000000000000000000041 /* RecentProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000041 /* RecentProject.swift */; };
+		B10000000000000000000042 /* RecentProjectRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000042 /* RecentProjectRow.swift */; };
+		B10000000000000000000043 /* RecentProjectsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000043 /* RecentProjectsStore.swift */; };
+		B10000000000000000000044 /* SearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000044 /* SearchField.swift */; };
+		B10000000000000000000045 /* SheetCanvas+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000045 /* SheetCanvas+Constants.swift */; };
+		B10000000000000000000046 /* SheetCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000046 /* SheetCanvas.swift */; };
+		B10000000000000000000047 /* SheetCanvasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000047 /* SheetCanvasViewModel.swift */; };
+		B10000000000000000000048 /* SheetInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000048 /* SheetInspector.swift */; };
+		B10000000000000000000049 /* SheetInspectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000049 /* SheetInspectorViewModel.swift */; };
+		B10000000000000000000050 /* SheetRenderMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000050 /* SheetRenderMode.swift */; };
+		B10000000000000000000051 /* SheetsWorkspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000051 /* SheetsWorkspace.swift */; };
+		B10000000000000000000052 /* SpriteAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000052 /* SpriteAsset.swift */; };
+		B10000000000000000000053 /* SpriteCanvas+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000053 /* SpriteCanvas+Constants.swift */; };
+		B10000000000000000000054 /* SpriteCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000054 /* SpriteCanvas.swift */; };
+		B10000000000000000000055 /* SpriteCanvasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000055 /* SpriteCanvasViewModel.swift */; };
+		B10000000000000000000056 /* SpriteCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000056 /* SpriteCategory.swift */; };
+		B10000000000000000000057 /* SpriteEmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000057 /* SpriteEmptyState.swift */; };
+		B10000000000000000000058 /* SpriteInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000058 /* SpriteInspector.swift */; };
+		B10000000000000000000059 /* SpriteManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000059 /* SpriteManagerApp.swift */; };
+		B10000000000000000000060 /* SpriteManagerAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000060 /* SpriteManagerAppDelegate.swift */; };
+		B10000000000000000000061 /* SpriteManagerDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000061 /* SpriteManagerDocumentView.swift */; };
+		B10000000000000000000062 /* SpriteManagerDocumentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000062 /* SpriteManagerDocumentViewModel.swift */; };
+		B10000000000000000000063 /* SpriteManagerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000063 /* SpriteManagerError.swift */; };
+		B10000000000000000000064 /* SpritePlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000064 /* SpritePlacement.swift */; };
+		B10000000000000000000065 /* SpriteProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000065 /* SpriteProject.swift */; };
+		B10000000000000000000066 /* SpriteSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000066 /* SpriteSheet.swift */; };
+		B10000000000000000000067 /* SpriteSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000067 /* SpriteSidebar.swift */; };
+		B10000000000000000000068 /* SpriteSidebarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000068 /* SpriteSidebarViewModel.swift */; };
+		B10000000000000000000069 /* SpritesWorkspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000069 /* SpritesWorkspace.swift */; };
+		B10000000000000000000070 /* UTType+SpriteProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000070 /* UTType+SpriteProject.swift */; };
+		B10000000000000000000071 /* WelcomeActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000071 /* WelcomeActionButton.swift */; };
+		B10000000000000000000072 /* WelcomeLayoutMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000072 /* WelcomeLayoutMetrics.swift */; };
+		B10000000000000000000073 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000073 /* WelcomeView.swift */; };
+		B10000000000000000000074 /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000074 /* WelcomeViewModel.swift */; };
+		B10000000000000000000075 /* WelcomeWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000075 /* WelcomeWindowController.swift */; };
+		B10000000000000000000076 /* WindowCloseGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000076 /* WindowCloseGuard.swift */; };
+		B10000000000000000000077 /* WindowDragArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000077 /* WindowDragArea.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A20000010000000000000000 /* SpriteManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpriteManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20000010000000000000006 /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon.png"; sourceTree = "<group>"; };
+		A20000010000000000000007 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info.plist"; sourceTree = "<group>"; };
+		A20000010000000000000008 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "AppIcon.icns"; sourceTree = "<group>"; };
+		B20000000000000000000001 /* AppPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppPalette.swift"; sourceTree = "<group>"; };
+		B20000000000000000000002 /* AssetThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssetThumbnail.swift"; sourceTree = "<group>"; };
+		B20000000000000000000003 /* BorderEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BorderEffect.swift"; sourceTree = "<group>"; };
+		B20000000000000000000004 /* Checkerboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Checkerboard.swift"; sourceTree = "<group>"; };
+		B20000000000000000000005 /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ColorPalette.swift"; sourceTree = "<group>"; };
+		B20000000000000000000006 /* ImportDropZone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImportDropZone.swift"; sourceTree = "<group>"; };
+		B20000000000000000000007 /* InspectorSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InspectorSection.swift"; sourceTree = "<group>"; };
+		B20000000000000000000008 /* IntegerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IntegerField.swift"; sourceTree = "<group>"; };
+		B20000000000000000000009 /* JSONEncoder+Pretty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+Pretty.swift"; sourceTree = "<group>"; };
+		B20000000000000000000010 /* LibraryIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryIndex.swift"; sourceTree = "<group>"; };
+		B20000000000000000000011 /* LibraryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryStore.swift"; sourceTree = "<group>"; };
+		B20000000000000000000012 /* NotificationName+DocumentWindows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+DocumentWindows.swift"; sourceTree = "<group>"; };
+		B20000000000000000000013 /* NotificationName+SpriteAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+SpriteAsset.swift"; sourceTree = "<group>"; };
+		B20000000000000000000014 /* OKLabColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OKLabColor.swift"; sourceTree = "<group>"; };
+		B20000000000000000000015 /* PaletteAlias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaletteAlias.swift"; sourceTree = "<group>"; };
+		B20000000000000000000016 /* PaletteColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaletteColor.swift"; sourceTree = "<group>"; };
+		B20000000000000000000017 /* PaletteColorCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaletteColorCard.swift"; sourceTree = "<group>"; };
+		B20000000000000000000018 /* PaletteColorMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaletteColorMath.swift"; sourceTree = "<group>"; };
+		B20000000000000000000019 /* PaletteGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaletteGrid.swift"; sourceTree = "<group>"; };
+		B20000000000000000000020 /* PaletteInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaletteInspector.swift"; sourceTree = "<group>"; };
+		B20000000000000000000021 /* PaletteInspectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaletteInspectorViewModel.swift"; sourceTree = "<group>"; };
+		B20000000000000000000022 /* PalettePreviewImage+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PalettePreviewImage+Constants.swift"; sourceTree = "<group>"; };
+		B20000000000000000000023 /* PalettePreviewImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PalettePreviewImage.swift"; sourceTree = "<group>"; };
+		B20000000000000000000024 /* PalettePreviewImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PalettePreviewImageViewModel.swift"; sourceTree = "<group>"; };
+		B20000000000000000000025 /* PalettePreviewSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PalettePreviewSidebar.swift"; sourceTree = "<group>"; };
+		B20000000000000000000026 /* PaletteRGBColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaletteRGBColor.swift"; sourceTree = "<group>"; };
+		B20000000000000000000027 /* PaletteWorkspace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaletteWorkspace.swift"; sourceTree = "<group>"; };
+		B20000000000000000000028 /* PaletteWorkspaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaletteWorkspaceViewModel.swift"; sourceTree = "<group>"; };
+		B20000000000000000000029 /* PixelBuffer+Composition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PixelBuffer+Composition.swift"; sourceTree = "<group>"; };
+		B20000000000000000000030 /* PixelBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PixelBuffer.swift"; sourceTree = "<group>"; };
+		B20000000000000000000031 /* PixelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PixelData.swift"; sourceTree = "<group>"; };
+		B20000000000000000000032 /* PixelDragPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PixelDragPreview.swift"; sourceTree = "<group>"; };
+		B20000000000000000000033 /* PixelGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PixelGrid.swift"; sourceTree = "<group>"; };
+		B20000000000000000000034 /* PlacementDragPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlacementDragPreview.swift"; sourceTree = "<group>"; };
+		B20000000000000000000035 /* PlacementPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlacementPosition.swift"; sourceTree = "<group>"; };
+		B20000000000000000000036 /* ProjectDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectDocument.swift"; sourceTree = "<group>"; };
+		B20000000000000000000037 /* ProjectHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectHeader.swift"; sourceTree = "<group>"; };
+		B20000000000000000000038 /* ProjectManifest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectManifest.swift"; sourceTree = "<group>"; };
+		B20000000000000000000039 /* ProjectSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectSnapshot.swift"; sourceTree = "<group>"; };
+		B20000000000000000000040 /* RGBAColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RGBAColor.swift"; sourceTree = "<group>"; };
+		B20000000000000000000041 /* RecentProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecentProject.swift"; sourceTree = "<group>"; };
+		B20000000000000000000042 /* RecentProjectRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecentProjectRow.swift"; sourceTree = "<group>"; };
+		B20000000000000000000043 /* RecentProjectsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecentProjectsStore.swift"; sourceTree = "<group>"; };
+		B20000000000000000000044 /* SearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchField.swift"; sourceTree = "<group>"; };
+		B20000000000000000000045 /* SheetCanvas+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SheetCanvas+Constants.swift"; sourceTree = "<group>"; };
+		B20000000000000000000046 /* SheetCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SheetCanvas.swift"; sourceTree = "<group>"; };
+		B20000000000000000000047 /* SheetCanvasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SheetCanvasViewModel.swift"; sourceTree = "<group>"; };
+		B20000000000000000000048 /* SheetInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SheetInspector.swift"; sourceTree = "<group>"; };
+		B20000000000000000000049 /* SheetInspectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SheetInspectorViewModel.swift"; sourceTree = "<group>"; };
+		B20000000000000000000050 /* SheetRenderMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SheetRenderMode.swift"; sourceTree = "<group>"; };
+		B20000000000000000000051 /* SheetsWorkspace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SheetsWorkspace.swift"; sourceTree = "<group>"; };
+		B20000000000000000000052 /* SpriteAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteAsset.swift"; sourceTree = "<group>"; };
+		B20000000000000000000053 /* SpriteCanvas+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteCanvas+Constants.swift"; sourceTree = "<group>"; };
+		B20000000000000000000054 /* SpriteCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteCanvas.swift"; sourceTree = "<group>"; };
+		B20000000000000000000055 /* SpriteCanvasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteCanvasViewModel.swift"; sourceTree = "<group>"; };
+		B20000000000000000000056 /* SpriteCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteCategory.swift"; sourceTree = "<group>"; };
+		B20000000000000000000057 /* SpriteEmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteEmptyState.swift"; sourceTree = "<group>"; };
+		B20000000000000000000058 /* SpriteInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteInspector.swift"; sourceTree = "<group>"; };
+		B20000000000000000000059 /* SpriteManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteManagerApp.swift"; sourceTree = "<group>"; };
+		B20000000000000000000060 /* SpriteManagerAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteManagerAppDelegate.swift"; sourceTree = "<group>"; };
+		B20000000000000000000061 /* SpriteManagerDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteManagerDocumentView.swift"; sourceTree = "<group>"; };
+		B20000000000000000000062 /* SpriteManagerDocumentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteManagerDocumentViewModel.swift"; sourceTree = "<group>"; };
+		B20000000000000000000063 /* SpriteManagerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteManagerError.swift"; sourceTree = "<group>"; };
+		B20000000000000000000064 /* SpritePlacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpritePlacement.swift"; sourceTree = "<group>"; };
+		B20000000000000000000065 /* SpriteProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteProject.swift"; sourceTree = "<group>"; };
+		B20000000000000000000066 /* SpriteSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteSheet.swift"; sourceTree = "<group>"; };
+		B20000000000000000000067 /* SpriteSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteSidebar.swift"; sourceTree = "<group>"; };
+		B20000000000000000000068 /* SpriteSidebarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteSidebarViewModel.swift"; sourceTree = "<group>"; };
+		B20000000000000000000069 /* SpritesWorkspace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpritesWorkspace.swift"; sourceTree = "<group>"; };
+		B20000000000000000000070 /* UTType+SpriteProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UTType+SpriteProject.swift"; sourceTree = "<group>"; };
+		B20000000000000000000071 /* WelcomeActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeActionButton.swift"; sourceTree = "<group>"; };
+		B20000000000000000000072 /* WelcomeLayoutMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeLayoutMetrics.swift"; sourceTree = "<group>"; };
+		B20000000000000000000073 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeView.swift"; sourceTree = "<group>"; };
+		B20000000000000000000074 /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeViewModel.swift"; sourceTree = "<group>"; };
+		B20000000000000000000075 /* WelcomeWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeWindowController.swift"; sourceTree = "<group>"; };
+		B20000000000000000000076 /* WindowCloseGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WindowCloseGuard.swift"; sourceTree = "<group>"; };
+		B20000000000000000000077 /* WindowDragArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WindowDragArea.swift"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A30000010000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A40000010000000000000000 = {
+			isa = PBXGroup;
+			children = (
+				A40000010000000000000001 /* Sources */,
+				A40000010000000000000002 /* Resources */,
+				A40000010000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A40000010000000000000001 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				A40000010000000000000004 /* SpriteManager */,
+			);
+			path = "Sources";
+			sourceTree = "<group>";
+		};
+		A40000010000000000000002 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A20000010000000000000006 /* AppIcon.png */,
+				A20000010000000000000008 /* AppIcon.icns */,
+				A20000010000000000000007 /* Info.plist */,
+			);
+			path = "Resources";
+			sourceTree = "<group>";
+		};
+		A40000010000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A20000010000000000000000 /* SpriteManager.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A40000010000000000000004 /* SpriteManager */ = {
+			isa = PBXGroup;
+			children = (
+				B20000000000000000000001 /* AppPalette.swift */,
+				B20000000000000000000002 /* AssetThumbnail.swift */,
+				B20000000000000000000003 /* BorderEffect.swift */,
+				B20000000000000000000004 /* Checkerboard.swift */,
+				B20000000000000000000005 /* ColorPalette.swift */,
+				B20000000000000000000006 /* ImportDropZone.swift */,
+				B20000000000000000000007 /* InspectorSection.swift */,
+				B20000000000000000000008 /* IntegerField.swift */,
+				B20000000000000000000009 /* JSONEncoder+Pretty.swift */,
+				B20000000000000000000010 /* LibraryIndex.swift */,
+				B20000000000000000000011 /* LibraryStore.swift */,
+				B20000000000000000000012 /* NotificationName+DocumentWindows.swift */,
+				B20000000000000000000013 /* NotificationName+SpriteAsset.swift */,
+				B20000000000000000000014 /* OKLabColor.swift */,
+				B20000000000000000000015 /* PaletteAlias.swift */,
+				B20000000000000000000016 /* PaletteColor.swift */,
+				B20000000000000000000017 /* PaletteColorCard.swift */,
+				B20000000000000000000018 /* PaletteColorMath.swift */,
+				B20000000000000000000019 /* PaletteGrid.swift */,
+				B20000000000000000000020 /* PaletteInspector.swift */,
+				B20000000000000000000021 /* PaletteInspectorViewModel.swift */,
+				B20000000000000000000022 /* PalettePreviewImage+Constants.swift */,
+				B20000000000000000000023 /* PalettePreviewImage.swift */,
+				B20000000000000000000024 /* PalettePreviewImageViewModel.swift */,
+				B20000000000000000000025 /* PalettePreviewSidebar.swift */,
+				B20000000000000000000026 /* PaletteRGBColor.swift */,
+				B20000000000000000000027 /* PaletteWorkspace.swift */,
+				B20000000000000000000028 /* PaletteWorkspaceViewModel.swift */,
+				B20000000000000000000029 /* PixelBuffer+Composition.swift */,
+				B20000000000000000000030 /* PixelBuffer.swift */,
+				B20000000000000000000031 /* PixelData.swift */,
+				B20000000000000000000032 /* PixelDragPreview.swift */,
+				B20000000000000000000033 /* PixelGrid.swift */,
+				B20000000000000000000034 /* PlacementDragPreview.swift */,
+				B20000000000000000000035 /* PlacementPosition.swift */,
+				B20000000000000000000036 /* ProjectDocument.swift */,
+				B20000000000000000000037 /* ProjectHeader.swift */,
+				B20000000000000000000038 /* ProjectManifest.swift */,
+				B20000000000000000000039 /* ProjectSnapshot.swift */,
+				B20000000000000000000040 /* RGBAColor.swift */,
+				B20000000000000000000041 /* RecentProject.swift */,
+				B20000000000000000000042 /* RecentProjectRow.swift */,
+				B20000000000000000000043 /* RecentProjectsStore.swift */,
+				B20000000000000000000044 /* SearchField.swift */,
+				B20000000000000000000045 /* SheetCanvas+Constants.swift */,
+				B20000000000000000000046 /* SheetCanvas.swift */,
+				B20000000000000000000047 /* SheetCanvasViewModel.swift */,
+				B20000000000000000000048 /* SheetInspector.swift */,
+				B20000000000000000000049 /* SheetInspectorViewModel.swift */,
+				B20000000000000000000050 /* SheetRenderMode.swift */,
+				B20000000000000000000051 /* SheetsWorkspace.swift */,
+				B20000000000000000000052 /* SpriteAsset.swift */,
+				B20000000000000000000053 /* SpriteCanvas+Constants.swift */,
+				B20000000000000000000054 /* SpriteCanvas.swift */,
+				B20000000000000000000055 /* SpriteCanvasViewModel.swift */,
+				B20000000000000000000056 /* SpriteCategory.swift */,
+				B20000000000000000000057 /* SpriteEmptyState.swift */,
+				B20000000000000000000058 /* SpriteInspector.swift */,
+				B20000000000000000000059 /* SpriteManagerApp.swift */,
+				B20000000000000000000060 /* SpriteManagerAppDelegate.swift */,
+				B20000000000000000000061 /* SpriteManagerDocumentView.swift */,
+				B20000000000000000000062 /* SpriteManagerDocumentViewModel.swift */,
+				B20000000000000000000063 /* SpriteManagerError.swift */,
+				B20000000000000000000064 /* SpritePlacement.swift */,
+				B20000000000000000000065 /* SpriteProject.swift */,
+				B20000000000000000000066 /* SpriteSheet.swift */,
+				B20000000000000000000067 /* SpriteSidebar.swift */,
+				B20000000000000000000068 /* SpriteSidebarViewModel.swift */,
+				B20000000000000000000069 /* SpritesWorkspace.swift */,
+				B20000000000000000000070 /* UTType+SpriteProject.swift */,
+				B20000000000000000000071 /* WelcomeActionButton.swift */,
+				B20000000000000000000072 /* WelcomeLayoutMetrics.swift */,
+				B20000000000000000000073 /* WelcomeView.swift */,
+				B20000000000000000000074 /* WelcomeViewModel.swift */,
+				B20000000000000000000075 /* WelcomeWindowController.swift */,
+				B20000000000000000000076 /* WindowCloseGuard.swift */,
+				B20000000000000000000077 /* WindowDragArea.swift */,
+			);
+			path = "SpriteManager";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A50000010000000000000001 /* SpriteManager */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A60000010000000000000002 /* Build configuration list for PBXNativeTarget "SpriteManager" */;
+			buildPhases = (
+				A30000010000000000000002 /* Sources */,
+				A30000010000000000000003 /* Resources */,
+				A30000010000000000000001 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SpriteManager;
+			productName = SpriteManager;
+			productReference = A20000010000000000000000 /* SpriteManager.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A50000010000000000000000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = A60000010000000000000001 /* Build configuration list for PBXProject "SpriteManager" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A40000010000000000000000;
+			productRefGroup = A40000010000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A50000010000000000000001 /* SpriteManager */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A30000010000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000010000000000000006 /* AppIcon.png in Resources */,
+				A10000010000000000000007 /* AppIcon.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A30000010000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000000000000000000001 /* AppPalette.swift in Sources */,
+				B10000000000000000000002 /* AssetThumbnail.swift in Sources */,
+				B10000000000000000000003 /* BorderEffect.swift in Sources */,
+				B10000000000000000000004 /* Checkerboard.swift in Sources */,
+				B10000000000000000000005 /* ColorPalette.swift in Sources */,
+				B10000000000000000000006 /* ImportDropZone.swift in Sources */,
+				B10000000000000000000007 /* InspectorSection.swift in Sources */,
+				B10000000000000000000008 /* IntegerField.swift in Sources */,
+				B10000000000000000000009 /* JSONEncoder+Pretty.swift in Sources */,
+				B10000000000000000000010 /* LibraryIndex.swift in Sources */,
+				B10000000000000000000011 /* LibraryStore.swift in Sources */,
+				B10000000000000000000012 /* NotificationName+DocumentWindows.swift in Sources */,
+				B10000000000000000000013 /* NotificationName+SpriteAsset.swift in Sources */,
+				B10000000000000000000014 /* OKLabColor.swift in Sources */,
+				B10000000000000000000015 /* PaletteAlias.swift in Sources */,
+				B10000000000000000000016 /* PaletteColor.swift in Sources */,
+				B10000000000000000000017 /* PaletteColorCard.swift in Sources */,
+				B10000000000000000000018 /* PaletteColorMath.swift in Sources */,
+				B10000000000000000000019 /* PaletteGrid.swift in Sources */,
+				B10000000000000000000020 /* PaletteInspector.swift in Sources */,
+				B10000000000000000000021 /* PaletteInspectorViewModel.swift in Sources */,
+				B10000000000000000000022 /* PalettePreviewImage+Constants.swift in Sources */,
+				B10000000000000000000023 /* PalettePreviewImage.swift in Sources */,
+				B10000000000000000000024 /* PalettePreviewImageViewModel.swift in Sources */,
+				B10000000000000000000025 /* PalettePreviewSidebar.swift in Sources */,
+				B10000000000000000000026 /* PaletteRGBColor.swift in Sources */,
+				B10000000000000000000027 /* PaletteWorkspace.swift in Sources */,
+				B10000000000000000000028 /* PaletteWorkspaceViewModel.swift in Sources */,
+				B10000000000000000000029 /* PixelBuffer+Composition.swift in Sources */,
+				B10000000000000000000030 /* PixelBuffer.swift in Sources */,
+				B10000000000000000000031 /* PixelData.swift in Sources */,
+				B10000000000000000000032 /* PixelDragPreview.swift in Sources */,
+				B10000000000000000000033 /* PixelGrid.swift in Sources */,
+				B10000000000000000000034 /* PlacementDragPreview.swift in Sources */,
+				B10000000000000000000035 /* PlacementPosition.swift in Sources */,
+				B10000000000000000000036 /* ProjectDocument.swift in Sources */,
+				B10000000000000000000037 /* ProjectHeader.swift in Sources */,
+				B10000000000000000000038 /* ProjectManifest.swift in Sources */,
+				B10000000000000000000039 /* ProjectSnapshot.swift in Sources */,
+				B10000000000000000000040 /* RGBAColor.swift in Sources */,
+				B10000000000000000000041 /* RecentProject.swift in Sources */,
+				B10000000000000000000042 /* RecentProjectRow.swift in Sources */,
+				B10000000000000000000043 /* RecentProjectsStore.swift in Sources */,
+				B10000000000000000000044 /* SearchField.swift in Sources */,
+				B10000000000000000000045 /* SheetCanvas+Constants.swift in Sources */,
+				B10000000000000000000046 /* SheetCanvas.swift in Sources */,
+				B10000000000000000000047 /* SheetCanvasViewModel.swift in Sources */,
+				B10000000000000000000048 /* SheetInspector.swift in Sources */,
+				B10000000000000000000049 /* SheetInspectorViewModel.swift in Sources */,
+				B10000000000000000000050 /* SheetRenderMode.swift in Sources */,
+				B10000000000000000000051 /* SheetsWorkspace.swift in Sources */,
+				B10000000000000000000052 /* SpriteAsset.swift in Sources */,
+				B10000000000000000000053 /* SpriteCanvas+Constants.swift in Sources */,
+				B10000000000000000000054 /* SpriteCanvas.swift in Sources */,
+				B10000000000000000000055 /* SpriteCanvasViewModel.swift in Sources */,
+				B10000000000000000000056 /* SpriteCategory.swift in Sources */,
+				B10000000000000000000057 /* SpriteEmptyState.swift in Sources */,
+				B10000000000000000000058 /* SpriteInspector.swift in Sources */,
+				B10000000000000000000059 /* SpriteManagerApp.swift in Sources */,
+				B10000000000000000000060 /* SpriteManagerAppDelegate.swift in Sources */,
+				B10000000000000000000061 /* SpriteManagerDocumentView.swift in Sources */,
+				B10000000000000000000062 /* SpriteManagerDocumentViewModel.swift in Sources */,
+				B10000000000000000000063 /* SpriteManagerError.swift in Sources */,
+				B10000000000000000000064 /* SpritePlacement.swift in Sources */,
+				B10000000000000000000065 /* SpriteProject.swift in Sources */,
+				B10000000000000000000066 /* SpriteSheet.swift in Sources */,
+				B10000000000000000000067 /* SpriteSidebar.swift in Sources */,
+				B10000000000000000000068 /* SpriteSidebarViewModel.swift in Sources */,
+				B10000000000000000000069 /* SpritesWorkspace.swift in Sources */,
+				B10000000000000000000070 /* UTType+SpriteProject.swift in Sources */,
+				B10000000000000000000071 /* WelcomeActionButton.swift in Sources */,
+				B10000000000000000000072 /* WelcomeLayoutMetrics.swift in Sources */,
+				B10000000000000000000073 /* WelcomeView.swift in Sources */,
+				B10000000000000000000074 /* WelcomeViewModel.swift in Sources */,
+				B10000000000000000000075 /* WelcomeWindowController.swift in Sources */,
+				B10000000000000000000076 /* WindowCloseGuard.swift in Sources */,
+				B10000000000000000000077 /* WindowDragArea.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A70000010000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		A70000010000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		A70000010000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.spritesmanager.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		A70000010000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.spritesmanager.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A60000010000000000000001 /* Build configuration list for PBXProject "SpriteManager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A70000010000000000000001 /* Debug */,
+				A70000010000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A60000010000000000000002 /* Build configuration list for PBXNativeTarget "SpriteManager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A70000010000000000000003 /* Debug */,
+				A70000010000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A50000010000000000000000 /* Project object */;
+}
+
+
