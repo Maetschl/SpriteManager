@@ -1,7 +1,7 @@
 import Foundation
 
 struct ProjectManifest: Codable, Sendable {
-    static let currentSchemaVersion = 2
+    static let currentSchemaVersion = 3
 
     var schemaVersion: Int = Self.currentSchemaVersion
     var project: SpriteProject

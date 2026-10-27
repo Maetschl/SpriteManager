@@ -3,6 +3,45 @@ import SwiftUI
 import UniformTypeIdentifiers
 import AppKit
 
+enum QualityIssueSeverity: String, Codable, Hashable, Sendable {
+    case error
+    case warning
+
+    var title: String { rawValue.capitalized }
+    var sortOrder: Int { self == .error ? 0 : 1 }
+}
+
+struct QualityIssue: Identifiable, Hashable, Sendable {
+    let id = UUID()
+    let severity: QualityIssueSeverity
+    let message: String
+    let sheetID: UUID?
+    let placementID: UUID?
+    let spriteID: UUID?
+
+    init(
+        severity: QualityIssueSeverity,
+        message: String,
+        sheetID: UUID? = nil,
+        placementID: UUID? = nil,
+        spriteID: UUID? = nil
+    ) {
+        self.severity = severity
+        self.message = message
+        self.sheetID = sheetID
+        self.placementID = placementID
+        self.spriteID = spriteID
+    }
+}
+
+struct QualityReport: Hashable, Sendable {
+    let issues: [QualityIssue]
+
+    var errors: [QualityIssue] { issues.filter { $0.severity == .error } }
+    var warnings: [QualityIssue] { issues.filter { $0.severity == .warning } }
+    var isClean: Bool { issues.isEmpty }
+}
+
 @MainActor
 final class ProjectDocument: @preconcurrency ReferenceFileDocument, ObservableObject {
     typealias Snapshot = ProjectSnapshot
@@ -196,6 +235,55 @@ final class ProjectDocument: @preconcurrency ReferenceFileDocument, ObservableOb
         markDirty(assetID: id)
     }
 
+    func updateAssetTags(_ id: UUID, tags: [String]) {
+        guard var asset = asset(for: id) else { return }
+        let normalized = Array(Set(tags.map { $0.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }.filter { !$0.isEmpty })).sorted()
+        guard asset.tags != normalized else { return }
+        recordUndo()
+        asset.tags = normalized
+        includeAssetInProjectIfNeeded(asset)
+        assets[id] = asset
+        try? library.updateMetadata(asset)
+        markDirty(assetID: id)
+    }
+
+    func createCollection(name: String? = nil) {
+        recordUndo()
+        let defaultName = "Collection \(project.collections.count + 1)"
+        project.collections.append(SpriteCollection(name: name?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false ? name! : defaultName))
+        markDirty()
+    }
+
+    func renameCollection(_ id: UUID, name: String) {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty,
+              let index = project.collections.firstIndex(where: { $0.id == id }),
+              project.collections[index].name != trimmed else { return }
+        recordUndo()
+        project.collections[index].name = trimmed
+        markDirty()
+    }
+
+    func deleteCollection(_ id: UUID) {
+        guard project.collections.contains(where: { $0.id == id }) else { return }
+        recordUndo()
+        project.collections.removeAll { $0.id == id }
+        markDirty()
+    }
+
+    func setAsset(_ assetID: UUID, inCollection collectionID: UUID, included: Bool) {
+        guard let index = project.collections.firstIndex(where: { $0.id == collectionID }) else { return }
+        let contains = project.collections[index].assetIDs.contains(assetID)
+        guard contains != included else { return }
+        recordUndo()
+        if included {
+            project.collections[index].assetIDs.append(assetID)
+        } else {
+            project.collections[index].assetIDs.removeAll { $0 == assetID }
+        }
+        markDirty()
+    }
+
     func shiftAsset(_ id: UUID, dx: Int, dy: Int) {
         guard let data = pixelData[id] ?? library.data(for: id) else { return }
         do {
@@ -280,6 +368,13 @@ final class ProjectDocument: @preconcurrency ReferenceFileDocument, ObservableOb
         if let gridSize { project.sheets[index].gridSize = max(1, gridSize) }
         if let border { project.sheets[index].borderEffect = border }
         clampPlacements(in: index)
+        markDirty()
+    }
+
+    func updatePreviewConfiguration(_ configuration: PackPreviewConfiguration) {
+        guard project.previewConfiguration != configuration else { return }
+        recordUndo()
+        project.previewConfiguration = configuration
         markDirty()
     }
 
@@ -545,6 +640,208 @@ final class ProjectDocument: @preconcurrency ReferenceFileDocument, ObservableOb
             }
         }
         return try highlight.cgImage()
+    }
+
+    func assetContainsColor(_ assetID: UUID, color: PaletteRGBColor) -> Bool {
+        guard let data = pixelData[assetID] ?? library.data(for: assetID),
+              let buffer = try? PixelBuffer(pngData: data) else { return false }
+        for y in 0..<buffer.height {
+            for x in 0..<buffer.width {
+                let pixel = buffer[x, y]
+                if pixel.a == PixelBuffer.opaqueAlpha,
+                   PaletteRGBColor(r: pixel.r, g: pixel.g, b: pixel.b) == color {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    func qualityReport() -> QualityReport {
+        var issues: [QualityIssue] = []
+        for sheet in project.sheets {
+            if sheet.placements.isEmpty {
+                issues.append(QualityIssue(
+                    severity: .warning,
+                    message: "This spritesheet has no sprites.",
+                    sheetID: sheet.id
+                ))
+                continue
+            }
+
+            var occupiedArea = 0
+            var referenceDimensions: (width: Int, height: Int)?
+            for placement in sheet.placements {
+                guard let asset = asset(for: placement.spriteID) else {
+                    issues.append(QualityIssue(
+                        severity: .error,
+                        message: "The placement references a missing sprite.",
+                        sheetID: sheet.id,
+                        placementID: placement.id,
+                        spriteID: placement.spriteID
+                    ))
+                    continue
+                }
+
+                occupiedArea += asset.width * asset.height
+                if referenceDimensions == nil { referenceDimensions = (asset.width, asset.height) }
+                if let referenceDimensions,
+                   asset.width != referenceDimensions.width || asset.height != referenceDimensions.height {
+                    issues.append(QualityIssue(
+                        severity: .warning,
+                        message: "This sprite has different dimensions from the first sprite in the sheet.",
+                        sheetID: sheet.id,
+                        placementID: placement.id,
+                        spriteID: asset.id
+                    ))
+                }
+
+                if placement.x < 0 || placement.y < 0 ||
+                    placement.x + asset.width > sheet.canvasWidth ||
+                    placement.y + asset.height > sheet.canvasHeight {
+                    issues.append(QualityIssue(
+                        severity: .error,
+                        message: "This sprite extends outside the sheet canvas.",
+                        sheetID: sheet.id,
+                        placementID: placement.id,
+                        spriteID: asset.id
+                    ))
+                }
+
+                if placement.x % max(1, sheet.gridSize) != 0 || placement.y % max(1, sheet.gridSize) != 0 {
+                    issues.append(QualityIssue(
+                        severity: .warning,
+                        message: "This placement does not match the sheet grid.",
+                        sheetID: sheet.id,
+                        placementID: placement.id,
+                        spriteID: asset.id
+                    ))
+                }
+            }
+
+            for leftIndex in sheet.placements.indices {
+                guard let leftAsset = asset(for: sheet.placements[leftIndex].spriteID) else { continue }
+                let left = sheet.placements[leftIndex]
+                let leftRect = CGRect(x: left.x, y: left.y, width: leftAsset.width, height: leftAsset.height)
+                for rightIndex in sheet.placements.indices where rightIndex > leftIndex {
+                    guard let rightAsset = asset(for: sheet.placements[rightIndex].spriteID) else { continue }
+                    let right = sheet.placements[rightIndex]
+                    let rightRect = CGRect(x: right.x, y: right.y, width: rightAsset.width, height: rightAsset.height)
+                    if leftRect.intersects(rightRect) {
+                        issues.append(QualityIssue(
+                            severity: .error,
+                            message: "Two sprites overlap in this sheet.",
+                            sheetID: sheet.id,
+                            placementID: right.id,
+                            spriteID: right.spriteID
+                        ))
+                    }
+                }
+            }
+
+            let canvasArea = max(1, sheet.canvasWidth * sheet.canvasHeight)
+            if Double(occupiedArea) / Double(canvasArea) < 0.25 {
+                issues.append(QualityIssue(
+                    severity: .warning,
+                    message: "This sheet has a large amount of unused canvas space.",
+                    sheetID: sheet.id
+                ))
+            }
+        }
+
+        return QualityReport(issues: issues.sorted { left, right in
+            if left.severity != right.severity { return left.severity.sortOrder < right.severity.sortOrder }
+            if left.sheetID != right.sheetID { return (left.sheetID?.uuidString ?? "") < (right.sheetID?.uuidString ?? "") }
+            return left.message < right.message
+        })
+    }
+
+    func renderedPackPreview(configuration: PackPreviewConfiguration? = nil) throws -> CGImage {
+        let configuration = configuration ?? project.previewConfiguration ?? PackPreviewConfiguration(title: project.name)
+        let sheets = project.sheets.compactMap { sheet -> (SpriteSheet, CGImage)? in
+            guard let image = try? renderedSheet(sheet, mode: .preview) else { return nil }
+            return (sheet, image)
+        }
+        let margin: CGFloat = 36
+        let titleHeight: CGFloat = configuration.title.isEmpty ? 20 : 54
+        let paletteHeight: CGFloat = configuration.showsPalette && effectivePalette != nil ? 42 : 0
+        let scale = CGFloat(max(1, configuration.scale))
+        let maximumSheetWidth = sheets.map { CGFloat($0.0.canvasWidth) * scale }.max() ?? 1
+        let width = max(1, Int(ceil(maximumSheetWidth + margin * 2)))
+        let sheetsHeight = sheets.reduce(CGFloat(0)) { result, entry in
+            result + CGFloat(entry.0.canvasHeight) * scale + (configuration.showsSheetNames ? 24 : 0)
+        }
+        let spacing = CGFloat(max(0, configuration.spacing))
+        let height = max(1, Int(ceil(margin * 2 + titleHeight + paletteHeight + sheetsHeight + spacing * CGFloat(max(0, sheets.count - 1)))))
+        let preview = NSImage(size: NSSize(width: width, height: height))
+        preview.lockFocus()
+        let background = NSColor(
+            calibratedRed: CGFloat(configuration.background.r),
+            green: CGFloat(configuration.background.g),
+            blue: CGFloat(configuration.background.b),
+            alpha: CGFloat(configuration.background.a)
+        )
+        background.setFill()
+        NSRect(x: 0, y: 0, width: width, height: height).fill()
+        NSGraphicsContext.current?.cgContext.interpolationQuality = .none
+
+        var cursorY = CGFloat(height) - margin
+        if !configuration.title.isEmpty {
+            NSString(string: configuration.title).draw(
+                at: NSPoint(x: margin, y: cursorY - 32),
+                withAttributes: [
+                    .font: NSFont.systemFont(ofSize: 26, weight: .bold),
+                    .foregroundColor: NSColor.white
+                ]
+            )
+            cursorY -= titleHeight
+        }
+
+        if configuration.showsPalette, let palette = effectivePalette {
+            var swatchX = margin
+            for color in palette.colors {
+                NSColor(
+                    calibratedRed: CGFloat(color.output.r) / 255,
+                    green: CGFloat(color.output.g) / 255,
+                    blue: CGFloat(color.output.b) / 255,
+                    alpha: 1
+                ).setFill()
+                NSRect(x: swatchX, y: cursorY - 22, width: 22, height: 22).fill()
+                swatchX += 28
+                if swatchX > CGFloat(width) - margin - 22 { break }
+            }
+            cursorY -= paletteHeight
+        }
+
+        for (sheet, cgImage) in sheets {
+            let sheetWidth = CGFloat(sheet.canvasWidth) * scale
+            let sheetHeight = CGFloat(sheet.canvasHeight) * scale
+            cursorY -= sheetHeight
+            let rect = NSRect(x: margin, y: cursorY, width: sheetWidth, height: sheetHeight)
+            NSImage(cgImage: cgImage, size: NSSize(width: sheetWidth, height: sheetHeight))
+                .draw(in: rect, from: .zero, operation: .sourceOver, fraction: 1)
+            if configuration.showsSheetNames {
+                NSString(string: sheet.name).draw(
+                    at: NSPoint(x: margin, y: cursorY - 20),
+                    withAttributes: [
+                        .font: NSFont.systemFont(ofSize: 13, weight: .medium),
+                        .foregroundColor: NSColor.white.withAlphaComponent(0.8)
+                    ]
+                )
+                cursorY -= 24
+            }
+            cursorY -= spacing
+        }
+        preview.unlockFocus()
+        guard let cgImage = preview.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            throw SpriteManagerError.invalidPNG("cannot create pack preview")
+        }
+        return cgImage
+    }
+
+    func exportPackPreview(to url: URL, configuration: PackPreviewConfiguration? = nil) throws {
+        let image = try renderedPackPreview(configuration: configuration)
+        try PixelBuffer(image: image).pngData().write(to: url, options: .atomic)
     }
 
     func image(for id: UUID) -> NSImage? {

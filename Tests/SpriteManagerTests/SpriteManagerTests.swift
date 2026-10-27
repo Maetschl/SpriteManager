@@ -487,6 +487,95 @@ struct SpriteManagerTests {
         #expect(highlight[1, 0].a == 0)
         #expect(originalHighlight[0, 0].a == 220)
     }
+
+    @Test func testAssetTagsAndProjectCollectionsRoundTrip() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let library = LibraryStore(rootURL: root.appendingPathComponent("library"))
+        let document = ProjectDocument(library: library)
+        let data = try PixelBuffer(width: 1, height: 1, pixels: [255, 0, 0, 255]).pngData()
+        document.importPNG(data: data, originalName: "hero.png")
+        let assetID = try #require(document.selectedSpriteID)
+        document.updateAssetTags(assetID, tags: ["Characters", " hero "])
+        document.createCollection(name: "Characters")
+        let collection = try #require(document.project.collections.first)
+        document.setAsset(assetID, inCollection: collection.id, included: true)
+
+        let snapshot = try document.snapshot(contentType: .spritesProject)
+        let wrapper = try document.fileWrapper(snapshot: snapshot)
+        let reopened = try ProjectDocument(
+            packageWrapper: wrapper,
+            library: LibraryStore(rootURL: root.appendingPathComponent("reopened-library"))
+        )
+        #expect(reopened.assets[assetID]?.tags == ["characters", "hero"])
+        #expect(reopened.project.collections.first?.name == "Characters")
+        #expect(reopened.project.collections.first?.assetIDs == [assetID])
+    }
+
+    @Test func testQualityReportFindsCompositionProblemsWithoutBlockingExport() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let data = try PixelBuffer(width: 2, height: 2, pixels: [
+            255, 0, 0, 255, 255, 0, 0, 255,
+            255, 0, 0, 255, 255, 0, 0, 255
+        ]).pngData()
+        let asset = SpriteAsset(
+            name: "Hero",
+            width: 2,
+            height: 2,
+            contentHash: PixelData.sha256(data),
+            originalFileName: "hero.png"
+        )
+        let sheet = SpriteSheet(
+            name: "Broken",
+            canvasWidth: 2,
+            canvasHeight: 2,
+            placements: [SpritePlacement(spriteID: asset.id, x: 1, y: 1)]
+        )
+        let library = LibraryStore(rootURL: root.appendingPathComponent("library"))
+        let document = ProjectDocument(
+            project: SpriteProject(name: "Quality", sheets: [sheet]),
+            library: library
+        )
+        try library.register(asset, data: data)
+
+        let report = document.qualityReport()
+        #expect(report.errors.contains { $0.message.contains("outside") })
+        #expect(report.isClean == false)
+        try document.export(sheet: sheet, to: root)
+        #expect(FileManager.default.fileExists(atPath: root.appendingPathComponent("Broken.png").path))
+    }
+
+    @Test func testPackPreviewUsesAllSheetsAndEffectivePalette() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let document = ProjectDocument(library: LibraryStore(rootURL: root.appendingPathComponent("library")))
+        let data = try PixelBuffer(width: 1, height: 1, pixels: [255, 0, 0, 255]).pngData()
+        document.importPNG(data: data, originalName: "red.png")
+        let assetID = try #require(document.selectedSpriteID)
+        document.createSheet()
+        let firstID = try #require(document.selectedSheetID)
+        document.addSprite(assetID, to: firstID)
+        document.createSheet()
+        let secondID = try #require(document.selectedSheetID)
+        document.addSprite(assetID, to: secondID)
+        document.createPalette()
+        let red = try #require(document.effectivePalette?.colors.first)
+        document.updatePaletteColor(red.id, output: PaletteRGBColor(r: 0, g: 255, b: 0))
+
+        let preview = try document.renderedPackPreview(configuration: PackPreviewConfiguration(title: "Pack", scale: 2))
+        #expect(preview.width > 0)
+        #expect(preview.height > 0)
+        try document.exportPackPreview(to: root.appendingPathComponent("Pack-Preview.png"))
+        #expect(FileManager.default.fileExists(atPath: root.appendingPathComponent("Pack-Preview.png").path))
+        #expect(try #require(document.pixelData[assetID]) == data)
+    }
 }
 
 

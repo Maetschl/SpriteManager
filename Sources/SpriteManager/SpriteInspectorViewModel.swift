@@ -23,8 +23,25 @@ final class SpriteInspectorViewModel: ObservableObject {
         )
     }
 
+    func tagsBinding(for asset: SpriteAsset) -> Binding<String> {
+        Binding(
+            get: { [document] in document.asset(for: asset.id)?.tags.joined(separator: ", ") ?? "" },
+            set: { [document] value in
+                document.updateAssetTags(asset.id, tags: value.split(separator: ",").map(String.init))
+            }
+        )
+    }
+
     func includeInProject(_ assetID: UUID) {
         document.includeAssetInProject(assetID)
+    }
+
+    func isInCollection(_ assetID: UUID, collection: SpriteCollection) -> Bool {
+        collection.assetIDs.contains(assetID)
+    }
+
+    func setCollection(_ collection: SpriteCollection, assetID: UUID, included: Bool) {
+        document.setAsset(assetID, inCollection: collection.id, included: included)
     }
 
     func copyUUID(_ assetID: UUID) {

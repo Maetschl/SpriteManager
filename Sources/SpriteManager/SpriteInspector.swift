@@ -21,6 +21,11 @@ struct SpriteInspector: View {
                         LabeledContent("Category", value: asset.category.displayName)
                         LabeledContent("Dimensions", value: "\(asset.width) × \(asset.height) px")
                         LabeledContent("Source file", value: asset.originalFileName)
+                        TextField("Tags", text: viewModel.tagsBinding(for: asset), prompt: Text("characters, environment, UI"))
+                            .textFieldStyle(.roundedBorder)
+                        Text("Separate tags with commas. Tags are shared across projects.")
+                            .font(.caption)
+                            .foregroundStyle(AppPalette.muted)
                         if !viewModel.isIncludedInProject(asset.id) {
                             Button("Include in project", systemImage: "plus.circle.fill") {
                                 viewModel.includeInProject(asset.id)
@@ -45,6 +50,17 @@ struct SpriteInspector: View {
                             }
                             .buttonStyle(.borderless)
                             .help("Copy UUID")
+                        }
+                    }
+                    if !document.project.collections.isEmpty {
+                        InspectorSection(title: "Project collections") {
+                            ForEach(document.project.collections) { collection in
+                                Toggle(collection.name, isOn: Binding(
+                                    get: { viewModel.isInCollection(asset.id, collection: collection) },
+                                    set: { viewModel.setCollection(collection, assetID: asset.id, included: $0) }
+                                ))
+                                .toggleStyle(.checkbox)
+                            }
                         }
                     }
                     InspectorSection(title: "Pixel editing") {

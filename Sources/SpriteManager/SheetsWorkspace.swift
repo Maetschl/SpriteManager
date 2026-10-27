@@ -5,11 +5,17 @@ import UniformTypeIdentifiers
 struct SheetsWorkspace: View {
     @ObservedObject var document: ProjectDocument
     let onEditSprite: (UUID) -> Void
+    @Binding var requestedPlacementID: UUID?
     @StateObject private var viewModel: SheetsWorkspaceViewModel
 
-    init(document: ProjectDocument, onEditSprite: @escaping (UUID) -> Void) {
+    init(
+        document: ProjectDocument,
+        onEditSprite: @escaping (UUID) -> Void,
+        requestedPlacementID: Binding<UUID?> = .constant(nil)
+    ) {
         self.document = document
         self.onEditSprite = onEditSprite
+        self._requestedPlacementID = requestedPlacementID
         _viewModel = StateObject(wrappedValue: SheetsWorkspaceViewModel(document: document))
     }
 
@@ -81,6 +87,12 @@ struct SheetsWorkspace: View {
         }
         .navigationSplitViewStyle(.balanced)
         .onChange(of: viewModel.selectedSheetID) { _, _ in viewModel.resetPlacementSelection() }
+        .onChange(of: requestedPlacementID) { _, placementID in
+            if let placementID {
+                viewModel.selectedPlacementID = placementID
+                requestedPlacementID = nil
+            }
+        }
         .alert("Delete spritesheet?", isPresented: Binding(
             get: { viewModel.sheetToDelete != nil },
             set: { if !$0 { viewModel.sheetToDelete = nil } }

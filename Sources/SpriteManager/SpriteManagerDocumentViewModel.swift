@@ -9,6 +9,7 @@ final class SpriteManagerDocumentViewModel: ObservableObject {
     @Published var showingImporter = false
     @Published var importError: String?
     @Published var selectedTab = 0
+    @Published var requestedPlacementID: UUID?
 
     init(document: ProjectDocument) {
         self.document = document
@@ -87,5 +88,11 @@ final class SpriteManagerDocumentViewModel: ObservableObject {
 
     func resolveConflict(useProjectVersion: Bool) {
         document.resolveNextConflict(useProjectVersion: useProjectVersion)
+    }
+
+    func openQualityIssue(_ issue: QualityIssue) {
+        if let sheetID = issue.sheetID { document.selectedSheetID = sheetID }
+        requestedPlacementID = issue.placementID
+        selectedTab = 1
     }
 }
